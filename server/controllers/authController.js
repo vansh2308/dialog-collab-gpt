@@ -58,7 +58,7 @@ exports.googleAuth = catchAsync(async (req, res, next) => {
     let user = await User.findOne({ email: userRes.data.email });
    
     if (!user) {
-        console.log('============ New User Created ============');
+        // console.log('============ New User Created ============');
         user = await User.create({
             name: userRes.data.name,
             email: userRes.data.email,

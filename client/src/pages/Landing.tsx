@@ -6,19 +6,33 @@ import { useGoogleLogin } from "@react-oauth/google";
 
 // @ts-ignore
 import { googleAuth } from "../services/api";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { setUser } from "@/features/userSlice";
+import { useNavigate } from "react-router-dom";
 
-export default function Landing(props: any) {
+export default function Landing() {
+    const user = useSelector((state: RootState) => state.user.value) 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        user && navigate(`/${user?.id}`)
+    }, [user])
+
+
     const responseGoogle = async (authResult: any) => {
-
         try {
             if (authResult["code"]) {
-                console.log(authResult.code);
+                // console.log(authResult.code);
                 const result = await googleAuth(authResult.code);
                 // console.log(result)
-                // console.log(result.data);
-                alert("successfuly logged in");
+                // console.log(result.data.data.user);
+                dispatch(setUser(result.data.data.user))
+                // navigate(`/${user?.id}`)
             } else {
-                console.log(authResult);
+                // console.log(authResult);
                 throw new Error(authResult);
             }
         } catch (e) {
