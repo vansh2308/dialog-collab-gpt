@@ -6,6 +6,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FaMeteor } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button";
+import { IoIosAddCircle } from "react-icons/io";
 
 
 
@@ -37,7 +45,22 @@ export default function Home() {
                 <div className="bg-popover h-full w-1/4 flex flex-col px-12 pt-6 gap-5 text-muted-foreground">
                     <Input type="text" placeholder="Browse projects/chats" className="focus:border-input focus:outline-none focus:text-white " />
 
-                    <h4 className="font-semibold mt-3"> Projects </h4>
+                    <div className="flex justify-between items-center">
+                        <h4 className="font-semibold mt-3 h-full"> Projects </h4>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild className="h-min">
+                                    <button>
+                                    <IoIosAddCircle className="text-xl text-muted-foreground" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="bg-accent">
+                                    <p>Create new</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+                    
                     <div className="max-h-[30vh] h-fit  overflow-y-scroll">
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
@@ -45,7 +68,21 @@ export default function Home() {
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                     </div>
 
-                    <h4 className="font-semibold mt-5"> Chats </h4>
+                    <div className="flex justify-between items-center mt-10">
+                        <h4 className="font-semibold mt-3 h-full"> Chats </h4>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild className="h-min">
+                                    <button>
+                                    <IoIosAddCircle className="text-xl text-muted-foreground" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="bg-accent">
+                                    <p>Create new</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
                     <div className="max-h-[30vh] h-fit  overflow-y-scroll">
                         <Skeleton className="h-6 mt-3 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />

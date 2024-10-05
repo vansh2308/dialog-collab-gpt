@@ -18,6 +18,7 @@ export default function Landing() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        // console.log(user)
         user && navigate(`/${user?.id}`)
     }, [user])
 
