@@ -7,6 +7,7 @@ import { store } from './app/store.ts';
 import Landing from './pages/Landing.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.tsx'
+import DefaultChat from './pages/DefaultChat.tsx'
 
 
 const router = createBrowserRouter([
@@ -15,16 +16,21 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Landing />,
       }, 
       {
-        path: "/:userId",
-        element: <Home />
+        path: ":userId/",
+        element: <Home />,
+        children: [
+          {
+            path: "",
+            element: <DefaultChat />
+          }
+        ]
       }
       
     ]
-
   },
 ]);
 
