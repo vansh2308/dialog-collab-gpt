@@ -16,7 +16,7 @@ export default function Landing({ }) {
                 className="absolute -top-3 w-full rotate-180" />
 
 
-            <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
                 <h1 className="font-bold text-[18rem] text-white/10 tracking-wider h-min leading-none">
                     DIALOG
                 </h1>
