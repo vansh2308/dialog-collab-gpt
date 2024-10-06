@@ -20,6 +20,7 @@ import { chatType } from "@/types";
 import { SlOptions } from "react-icons/sl";
 import { useEffect, useState } from "react";
 import ChatTile from "@/components/ChatTile";
+import { Item } from "@radix-ui/react-menubar";
 
 
 
@@ -28,6 +29,7 @@ import ChatTile from "@/components/ChatTile";
 export default function Home() {
     const user = useSelector((state: RootState) => state.user.value)
     const allChats = useSelector((state: RootState) => state.chats.allChats)
+    const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -39,13 +41,18 @@ export default function Home() {
         dispatch(addChat(newChat))
     }
 
-    
+    const handleFilter = (e: any) => {
+        setFilterText(e.target.value)
+        console.log(filterText)
+    }
+
+
 
 
     return (
         <div className="w-screen h-screen flex flex-col  text-card-foreground">
 
-            <Menubar className="w-full bg-popover border-none rounded-none p-5 px-12 flex justify-between items-center h-max">
+            <Menubar className="w-full bg-popover border-none rounded-none p-5 px-12 flex justify-between items-center h-[10vh]">
                 <FaMeteor className="text-[2.5rem] text-popover-foreground" onClick={() => navigate("/")} />
                 <MenubarMenu>
                     <MenubarTrigger className="focus:bg-popover w-fit h-fit p-0 rounded-full">
@@ -62,9 +69,12 @@ export default function Home() {
                 </MenubarMenu>
             </Menubar>
 
-            <div className="h-full flex flex-1">
+            <div className="h-[90vh] flex flex-1">
                 <div className="bg-popover h-full w-1/4 flex flex-col px-12 pt-6 gap-5 text-muted-foreground">
-                    <Input type="text" placeholder="Browse projects/chats" className="focus:border-input focus:outline-none focus:text-white " />
+                    <Input type="text" placeholder="Browse projects/chats" className="focus:border-input 
+                    focus:outline-none focus:text-white "
+                        onChange={(e) => handleFilter(e)}
+                    />
 
                     <div className="flex justify-between items-center">
                         <h4 className="font-semibold mt-3 h-full"> Projects </h4>
@@ -109,9 +119,11 @@ export default function Home() {
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
 
+
+                        {/* WIP: Fix filter  */}
                         {
                             allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                allChats.map((item, userId, key) => (
+                                allChats.filter((item) => item.name.includes(filterText)).map((item, userId, key) => (
                                     <ChatTile item={item} userId={user?._id} />
                                 ))
                         }
@@ -119,7 +131,7 @@ export default function Home() {
                 </div>
 
 
-                <div className="w-3/4 h-[90%] text-foreground overflow-y-scroll">
+                <div className="w-3/4 h-full text-foreground bg-accent/30">
                     <Outlet />
                 </div>
 

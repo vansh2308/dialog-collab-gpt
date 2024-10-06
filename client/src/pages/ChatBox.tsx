@@ -39,15 +39,15 @@ export default function ChatBox() {
     }
 
     return (
-        // WIP: Fix chatbox height styles 
-        <div className="w-full h-full relative px-10 flex flex-col gap-5 pb-10">
 
-            <div className="h-[90%] w-full relative ">
+        <div className="w-full h-full relative p-6 flex flex-col gap-5">
+
+            <div className="flex-1 max-h-[90%] w-full overflow-y-scroll  relative ">
                 <Outlet />
             </div>
 
 
-            <div className="bg-accent rounded-full w-full h-fit p-[0.4rem] flex gap-3  ">
+            <div className="bg-accent rounded-full w-full h-16 p-[0.4rem] flex gap-3">
                 <Button variant="secondary" className="h-full aspect-square rounded-full hover:bg-popover bg-popover/50">
                     <FaPaperclip />
                 </Button>
