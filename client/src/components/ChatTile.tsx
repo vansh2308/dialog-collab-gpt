@@ -1,22 +1,6 @@
 import { chatType } from "@/types"
 import { NavLink, useNavigate } from "react-router-dom"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "./ui/button"
-import { SlOptions } from "react-icons/sl"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux"
@@ -35,8 +19,6 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
         e.preventDefault()
 
         dispatch(setChats(allChats.filter((chat) => chat._id != item._id)))
-
-        // WIP: Add navigation features
         navigate(`/${userId}`)
     }
 

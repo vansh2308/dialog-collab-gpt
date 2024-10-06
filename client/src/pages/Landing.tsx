@@ -17,22 +17,20 @@ export default function Landing() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        // console.log(user)
-        user && navigate(`/${user?.id}`)
-    }, [user])
+    // useEffect(() => {
+    //     // console.log(user)
+    //     // user && navigate(`/${user?.id}`)
+    // }, [user])
 
 
     const responseGoogle = async (authResult: any) => {
         try {
             if (authResult["code"]) {
-                // console.log(authResult.code);
                 const result = await googleAuth(authResult.code);
-                // console.log(result)
-                // console.log(result.data.data.user);
+
                 dispatch(setUser(result.data.data.user))
                 localStorage.setItem('user', JSON.stringify(result.data.data.user));
-                // navigate(`/${user?.id}`)
+                navigate(`/${user?.id}`)
             } else {
                 // console.log(authResult);
                 throw new Error(authResult);

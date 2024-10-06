@@ -18,11 +18,11 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <Landing />,
-      }, 
+      },
       {
-        path: ":userId/",
+        path: "/:userId/",
         element: <Home />,
         children: [
           {
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
               {
                 path: "",
                 element: <FaMeteor className="text-[15rem] text-accent absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-              }, 
+              },
               {
                 path: ":chatId",
                 element: <Chat />
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
           }
         ]
       }
-      
+
     ]
   },
 ]);

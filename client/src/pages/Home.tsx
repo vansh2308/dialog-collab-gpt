@@ -48,7 +48,7 @@ export default function Home() {
         <div className="w-screen h-screen flex flex-col  text-card-foreground">
 
             <Menubar className="w-full bg-popover border-none rounded-none p-5 px-12 flex justify-between items-center h-max">
-                <FaMeteor className="text-[2.5rem] text-popover-foreground" />
+                <FaMeteor className="text-[2.5rem] text-popover-foreground" onClick={() => navigate("/")} />
                 <MenubarMenu>
                     <MenubarTrigger className="focus:bg-popover w-fit h-fit p-0 rounded-full">
                         <Avatar>
