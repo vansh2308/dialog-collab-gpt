@@ -7,32 +7,47 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";
 import { createNewChat, createNewPrompt } from "@/lib/utils";
-import { addChat, setChats, setActiveChat } from "@/features/chatsSlice";
-import { Outlet } from "react-router-dom";
+import { addChat, setChats, setActiveChat, addPrompt } from "@/features/chatsSlice";
+import { Outlet, useParams } from "react-router-dom";
+import { version } from "os";
+import { promptType } from "@/types";
 
 
 export default function ChatBox() {
-    const activeChat = useSelector((state: RootState) => state.chats.activeChat)
     const user = useSelector((state: RootState) => state.user.value)
     const [promptValue, setPromptValue] = useState<string>("")
     const dispatch = useDispatch()
+    const allChats = useSelector((state: RootState) => state.chats.allChats)
+    let { chatId } = useParams();
 
     useEffect(() => {
         console.log(promptValue)
     }, [promptValue])
 
     const handlePromptSubmit = () => {
-        
+        let chatIdx = allChats.findIndex(chat => chat._id == chatId)
+
+        // WIP: Fetch reply from API key 
+        let newPrompt: promptType = [{
+            version: 0,
+            madeBy: user,
+            question: promptValue,
+            reply: "Just a demo reply",
+            _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
+        }]
+
+        dispatch(addPrompt({ idx: chatIdx, newPrompt }))
     }
 
     return (
-        <div className="w-full h-full relative px-10 flex flex-col gap-5 pb-10">
+        // WIP: Fix chatbox height styles 
+        <div className="w-full h-full relative px-10 flex flex-col gap-5 pb-10 overflow-y-scroll">
 
-            <div className="flex-1 w-full relative ">
+            <div className="h-[90%] overflow-y-scroll w-full relative ">
                 <Outlet />
             </div>
 
-        
+
             <div className="bg-accent rounded-full w-full h-fit p-[0.4rem] flex gap-3  ">
                 <Button variant="secondary" className="h-full aspect-square rounded-full hover:bg-popover bg-popover/50">
                     <FaPaperclip />
@@ -46,7 +61,7 @@ export default function ChatBox() {
 
                 <Button variant="secondary" className="h-full aspect-square rounded-full hover:bg-popover bg-popover/50"
                     onClick={handlePromptSubmit}
-                    disabled={promptValue == ""}
+                    disabled={promptValue == "" || !chatId}
                 >
                     <FaArrowUp />
                 </Button>

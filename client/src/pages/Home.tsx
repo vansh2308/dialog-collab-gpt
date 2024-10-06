@@ -39,9 +39,7 @@ export default function Home() {
         dispatch(addChat(newChat))
     }
 
-    useEffect(() => {
-        console.log(allChats)
-    }, [allChats])
+    
 
 
     return (
@@ -121,7 +119,7 @@ export default function Home() {
                 </div>
 
 
-                <div className="w-3/4 h-full  text-foreground">
+                <div className="w-3/4 h-[90%] text-foreground overflow-y-scroll">
                     <Outlet />
                 </div>
 
