@@ -15,14 +15,12 @@ import { promptType } from "@/types";
 
 export default function ChatBox() {
     const user = useSelector((state: RootState) => state.user.value)
-    const [promptValue, setPromptValue] = useState<string>("")
+    const [promptValue, setPromptValue] = useState<string>("Give me a Startup Idea...")
     const dispatch = useDispatch()
     const allChats = useSelector((state: RootState) => state.chats.allChats)
     let { chatId } = useParams();
 
-    useEffect(() => {
-        console.log(promptValue)
-    }, [promptValue])
+    
 
     const handlePromptSubmit = () => {
         let chatIdx = allChats.findIndex(chat => chat._id == chatId)
@@ -37,13 +35,14 @@ export default function ChatBox() {
         }]
 
         dispatch(addPrompt({ idx: chatIdx, newPrompt }))
+
     }
 
     return (
         // WIP: Fix chatbox height styles 
-        <div className="w-full h-full relative px-10 flex flex-col gap-5 pb-10 overflow-y-scroll">
+        <div className="w-full h-full relative px-10 flex flex-col gap-5 pb-10">
 
-            <div className="h-[90%] overflow-y-scroll w-full relative ">
+            <div className="h-[90%] w-full relative ">
                 <Outlet />
             </div>
 
@@ -55,7 +54,8 @@ export default function ChatBox() {
 
                 <Input
                     type="text"
-                    placeholder="Give me a startup idea..." className="h-full"
+                    placeholder={"Give me a startup idea..."}
+                    className="h-full"
                     onChange={(e) => setPromptValue(e.target.value)}
                 />
 
