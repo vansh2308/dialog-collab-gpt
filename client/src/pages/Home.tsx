@@ -4,21 +4,44 @@ import { Input } from "@/components/ui/input";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from "@/components/ui/menubar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FaMeteor } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-  } from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button";
 import { IoIosAddCircle } from "react-icons/io";
+import { createNewChat } from "@/lib/utils";
+import { addChat } from "@/features/chatsSlice";
+import { chatType } from "@/types";
+import { SlOptions } from "react-icons/sl";
+import { useEffect, useState } from "react";
+import ChatTile from "@/components/ChatTile";
+
+
 
 
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user.value)
+    const allChats = useSelector((state: RootState) => state.chats.allChats)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+
+    const handleStartChat = () => {
+        let newChat = createNewChat({ owner: user, name: "Untitled Chat", question: null, _id: (allChats.length + 1).toString() })
+
+        navigate(`/${user?._id}/${newChat._id}`)
+        dispatch(addChat(newChat))
+    }
+
+    useEffect(() => {
+        console.log(allChats)
+    }, [allChats])
 
 
     return (
@@ -51,7 +74,7 @@ export default function Home() {
                             <Tooltip>
                                 <TooltipTrigger asChild className="h-min">
                                     <button>
-                                    <IoIosAddCircle className="text-xl text-muted-foreground" />
+                                        <IoIosAddCircle className="text-xl text-muted-foreground" />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent className="bg-accent">
@@ -60,34 +83,40 @@ export default function Home() {
                             </Tooltip>
                         </TooltipProvider>
                     </div>
-                    
-                    <div className="max-h-[30vh] h-fit  overflow-y-scroll">
+
+                    <div className="max-h-[30vh] h-fit  overflow-y-scroll text-center text-foreground text-xs">
+                        {/* <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                        <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
+                        No projects. Create one!
                     </div>
 
                     <div className="flex justify-between items-center mt-10">
                         <h4 className="font-semibold mt-3 h-full"> Chats </h4>
                         <TooltipProvider>
                             <Tooltip>
-                                <TooltipTrigger asChild className="h-min">
-                                    <button>
+                                <TooltipTrigger className="h-min" onClick={handleStartChat}>
                                     <IoIosAddCircle className="text-xl text-muted-foreground" />
-                                    </button>
                                 </TooltipTrigger>
                                 <TooltipContent className="bg-accent">
-                                    <p>Create new</p>
+                                    <p>Start new</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
                     </div>
-                    <div className="max-h-[30vh] h-fit  overflow-y-scroll">
-                        <Skeleton className="h-6 mt-3 w-full rounded-full" />
+                    <div className="max-h-[30vh] h-fit  overflow-y-scroll text-center text-foreground text-xs">
+                        {/* <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                        <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
+
+                        {
+                            allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
+                                allChats.map((item, userId, key) => (
+                                    <ChatTile item={item} userId={user?._id} />
+                                ))
+                        }
                     </div>
                 </div>
 
@@ -97,8 +126,9 @@ export default function Home() {
                 </div>
 
             </div>
-
-
         </div>
     )
 }
+
+
+

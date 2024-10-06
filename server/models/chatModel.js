@@ -1,9 +1,7 @@
-/* eslint-disable prefer-arrow-callback */
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema(
+
+
+const chatSchema = new mongoose.Schema(
     {
         name: {
             type: String,

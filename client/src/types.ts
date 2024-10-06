@@ -12,3 +12,19 @@ export type userType = {
     _id: string
 } | null
 
+
+export type promptType = {
+    version: number,
+    madeBy: userType,
+    question: string,
+    reply: string,
+    _id: string
+}[]
+
+export type chatType = {
+    owner: userType,
+    name: string,
+    dateCreated: Date,
+    allPrompts: promptType[] | null,
+    _id: string
+}

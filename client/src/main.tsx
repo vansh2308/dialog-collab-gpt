@@ -7,7 +7,9 @@ import { store } from './app/store.ts';
 import Landing from './pages/Landing.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.tsx'
-import DefaultChat from './pages/DefaultChat.tsx'
+import ChatBox from './pages/ChatBox.tsx'
+import { FaMeteor } from 'react-icons/fa6'
+import Chat from './pages/Chat.tsx'
 
 
 const router = createBrowserRouter([
@@ -25,7 +27,17 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <DefaultChat />
+            element: <ChatBox />,
+            children: [
+              {
+                path: "",
+                element: <FaMeteor className="text-[15rem] text-accent absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              }, 
+              {
+                path: ":chatId",
+                element: <Chat />
+              }
+            ]
           }
         ]
       }

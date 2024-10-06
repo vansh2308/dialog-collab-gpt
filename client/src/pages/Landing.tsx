@@ -31,6 +31,7 @@ export default function Landing() {
                 // console.log(result)
                 // console.log(result.data.data.user);
                 dispatch(setUser(result.data.data.user))
+                localStorage.setItem('user', JSON.stringify(result.data.data.user));
                 // navigate(`/${user?.id}`)
             } else {
                 // console.log(authResult);
