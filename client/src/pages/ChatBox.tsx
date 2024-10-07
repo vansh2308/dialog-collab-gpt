@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";
 import { createNewChat, createNewPrompt } from "@/lib/utils";
-import { addChat, setChats, setActiveChat, addPrompt } from "@/features/chatsSlice";
+import { addPrompt } from "@/features/chatsSlice";
 import { Outlet, useParams } from "react-router-dom";
 import { version } from "os";
 import { promptType } from "@/types";
