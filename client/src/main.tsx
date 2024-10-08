@@ -38,6 +38,10 @@ const router = createBrowserRouter([
                 element: <Chat />
               }
             ]
+          },
+          {
+            path: "project/:projectId/",
+            element: <div>Project Details</div>
           }
         ]
       }

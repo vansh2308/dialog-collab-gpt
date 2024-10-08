@@ -1,6 +1,6 @@
 import { chatType } from "@/types"
 import { NavLink, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux"
@@ -12,8 +12,11 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
     const [editMode, setEditMode] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [hover, setHover] = useState(false)
     const allChats = useSelector((state: RootState) => state.chats.allChats)
 
+
+   
 
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
@@ -38,14 +41,17 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
         <NavLink
             to={`/${userId}/${item._id}`}
             className={({ isActive }) => isActive ? "flex justify-between items-center p-3 rounded-lg bg-accent" : "flex justify-between items-center p-3 rounded-lg"}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
         >
             {!editMode ?
                 <h3 onDoubleClick={() => setEditMode(true)}> {chatName} </h3> :
                 <Input type="text" className="text-xs p-0 py-0 h-fit" onKeyDown={(e) => handleSubmit(e)} />
             }
 
+            {/* WIP: Deletion is not working fine */}
             <button
-                className="text-lg"
+                className={`text-lg ${!hover ? 'opacity-0' : 'opacity-100'}`}
                 onClick={e => handleDelete(e)}
             >
                 <MdDelete />

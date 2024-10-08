@@ -28,3 +28,13 @@ export type chatType = {
     allPrompts: promptType[] | null,
     _id: string
 }
+
+
+export type projectType = {
+    owner: userType,
+    name: string,
+    dateCreated: Date,
+    chats: chatType[],
+    _id: string,
+    members: userType[]
+}

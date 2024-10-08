@@ -1,4 +1,4 @@
-import { chatType, promptType, userType } from "@/types"
+import { chatType, projectType, promptType, userType } from "@/types"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -45,4 +45,24 @@ export const createNewPrompt = ({
   return [
     { version, madeBy, question, reply, _id }
   ]
+}
+
+
+export const createNewProject = ({
+  owner,
+  name,
+  _id,
+}: {
+  owner: userType,
+  name: string,
+  _id: string
+}): projectType => {
+  return({
+    owner,
+    name,
+    dateCreated: new Date(),
+    chats: [],
+    _id,
+    members: [owner]
+  })
 }

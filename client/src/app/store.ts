@@ -4,12 +4,18 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import userReducer from '../features/userSlice'
 import chatsReducer from '@/features/chatsSlice'
+import projectsReducer from '@/features/projectsSlice'
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    chats: chatsReducer
-  }
+    chats: chatsReducer,
+    projects: projectsReducer
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })
 
 

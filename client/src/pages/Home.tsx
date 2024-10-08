@@ -14,13 +14,14 @@ import {
 } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button";
 import { IoIosAddCircle } from "react-icons/io";
-import { createNewChat } from "@/lib/utils";
+import { createNewChat, createNewProject } from "@/lib/utils";
 import { addChat } from "@/features/chatsSlice";
 import { chatType } from "@/types";
 import { SlOptions } from "react-icons/sl";
 import { useEffect, useState } from "react";
 import ChatTile from "@/components/ChatTile";
 import { Item } from "@radix-ui/react-menubar";
+import { addProject } from "@/features/projectsSlice";
 
 
 
@@ -29,9 +30,18 @@ import { Item } from "@radix-ui/react-menubar";
 export default function Home() {
     const user = useSelector((state: RootState) => state.user.value)
     const allChats = useSelector((state: RootState) => state.chats.allChats)
+    const allProjects = useSelector((state: RootState) => state.projects.allProjects)
+    const [chatList, setChatList]  = useState(allChats)
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        console.log(allChats)
+        setChatList(allChats)
+    }, [allChats])
+
 
 
     const handleStartChat = () => {
@@ -41,12 +51,13 @@ export default function Home() {
         dispatch(addChat(newChat))
     }
 
-    const handleFilter = (e: any) => {
-        setFilterText(e.target.value)
-        console.log(filterText)
+
+    const handleCreateProject = () => {
+        let newProject = createNewProject({owner: user, name: "Untitled Project", _id:`p100${allProjects.length+1}`  })
+
+        navigate(`/${user?._id}/project/${newProject._id}`) 
+        dispatch(addProject(newProject))
     }
-
-
 
 
     return (
@@ -73,17 +84,15 @@ export default function Home() {
                 <div className="bg-popover h-full w-1/4 flex flex-col px-12 pt-6 gap-5 text-muted-foreground">
                     <Input type="text" placeholder="Browse projects/chats" className="focus:border-input 
                     focus:outline-none focus:text-white "
-                        onChange={(e) => handleFilter(e)}
+                        onChange={(e) => setFilterText(e.target.value)}
                     />
 
                     <div className="flex justify-between items-center">
                         <h4 className="font-semibold mt-3 h-full"> Projects </h4>
                         <TooltipProvider>
                             <Tooltip>
-                                <TooltipTrigger asChild className="h-min">
-                                    <button>
+                                <TooltipTrigger className="h-min" onClick={handleCreateProject}>
                                         <IoIosAddCircle className="text-xl text-muted-foreground" />
-                                    </button>
                                 </TooltipTrigger>
                                 <TooltipContent className="bg-accent">
                                     <p>Create new</p>
@@ -108,7 +117,7 @@ export default function Home() {
                                     <IoIosAddCircle className="text-xl text-muted-foreground" />
                                 </TooltipTrigger>
                                 <TooltipContent className="bg-accent">
-                                    <p>Start new</p>
+                                    <p>Start new chat</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
@@ -122,9 +131,9 @@ export default function Home() {
 
                         {/* WIP: Fix filter  */}
                         {
-                            allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                allChats.filter((item) => item.name.includes(filterText)).map((item, userId, key) => (
-                                    <ChatTile item={item} userId={user?._id} />
+                            chatList.length == 0 ? <h4>No Chats. Start one!</h4> :
+                                chatList.map((item, key) => (
+                                    <ChatTile item={item} userId={user?._id} key={key} />
                                 ))
                         }
                     </div>
