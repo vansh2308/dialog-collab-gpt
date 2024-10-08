@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import ChatTile from "@/components/ChatTile";
 import { Item } from "@radix-ui/react-menubar";
 import { addProject } from "@/features/projectsSlice";
+import ProjectTile from "@/components/ProjectTile";
 
 
 
@@ -31,16 +32,14 @@ export default function Home() {
     const user = useSelector((state: RootState) => state.user.value)
     const allChats = useSelector((state: RootState) => state.chats.allChats)
     const allProjects = useSelector((state: RootState) => state.projects.allProjects)
-    const [chatList, setChatList]  = useState(allChats)
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
 
     useEffect(() => {
-        console.log(allChats)
-        setChatList(allChats)
-    }, [allChats])
+        console.log(allProjects)
+    }, [allProjects])
 
 
 
@@ -53,9 +52,9 @@ export default function Home() {
 
 
     const handleCreateProject = () => {
-        let newProject = createNewProject({owner: user, name: "Untitled Project", _id:`p100${allProjects.length+1}`  })
+        let newProject = createNewProject({ owner: user, name: "Untitled Project", _id: `p100${allProjects.length + 1}` })
 
-        navigate(`/${user?._id}/project/${newProject._id}`) 
+        navigate(`/${user?._id}/project/${newProject._id}`)
         dispatch(addProject(newProject))
     }
 
@@ -92,7 +91,7 @@ export default function Home() {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger className="h-min" onClick={handleCreateProject}>
-                                        <IoIosAddCircle className="text-xl text-muted-foreground" />
+                                    <IoIosAddCircle className="text-xl text-muted-foreground" />
                                 </TooltipTrigger>
                                 <TooltipContent className="bg-accent">
                                     <p>Create new</p>
@@ -106,7 +105,13 @@ export default function Home() {
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" />
                         <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
-                        No projects. Create one!
+
+                        {
+                            allProjects.length == 0 ? <h4>No Project. Create one!</h4> :
+                                allProjects.map((project, key) => (
+                                    <ProjectTile project={project} userId={user?._id} key={key} />
+                                ))
+                        }
                     </div>
 
                     <div className="flex justify-between items-center mt-10">
@@ -131,8 +136,8 @@ export default function Home() {
 
                         {/* WIP: Fix filter  */}
                         {
-                            chatList.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                chatList.map((item, key) => (
+                            allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
+                                allChats.map((item, key) => (
                                     <ChatTile item={item} userId={user?._id} key={key} />
                                 ))
                         }

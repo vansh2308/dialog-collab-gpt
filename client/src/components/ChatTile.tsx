@@ -16,8 +16,6 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
     const allChats = useSelector((state: RootState) => state.chats.allChats)
 
 
-   
-
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
@@ -28,7 +26,7 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
 
     const handleSubmit = (e: any) => {
         if (e.keyCode == 13) {
-            let newName = e.target.value == "" ? "Untitled" : e.target.value
+            let newName = e.target.value.trim() == "" ? "Untitled" : e.target.value
             setChatName(newName)
             setEditMode(false)
 
