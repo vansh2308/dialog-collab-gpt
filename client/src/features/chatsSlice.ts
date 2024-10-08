@@ -23,8 +23,8 @@ export const chatsSlice = createSlice({
     addChat: (state, action: PayloadAction<chatType>) => {
       state.allChats.push(action.payload)
     },
-    setChats: (state, action: PayloadAction<chatType[]>) => {
-      state.allChats = action.payload
+    deleteChat: (state, action: PayloadAction<string | undefined>) => {
+      state.allChats = state.allChats.filter((chat) => chat._id != action.payload)
     },
     renameChat: (state, action: PayloadAction<{ idx: number, newName: string }>) => {
       state.allChats[action.payload.idx].name = action.payload.newName
@@ -35,5 +35,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { addChat, setChats, renameChat, addPrompt} = chatsSlice.actions
+export const { addChat, deleteChat, renameChat, addPrompt} = chatsSlice.actions
 export default chatsSlice.reducer

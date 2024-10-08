@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux"
-import { renameChat, setChats } from "@/features/chatsSlice"
+import { deleteChat, renameChat } from "@/features/chatsSlice"
 import { RootState } from "@/app/store"
 
 const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined }) => {
@@ -19,7 +19,7 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
-        dispatch(setChats(allChats.filter((chat) => chat._id != item._id)))
+        dispatch(deleteChat(item._id))
         navigate(`/${userId}`)
     }
 
