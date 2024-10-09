@@ -31,9 +31,13 @@ export const projectsSlice = createSlice({
     },
     addChatToProject: (state, action: PayloadAction<{projectIdx: number, chat: chatType}>) => {
         state.allProjects[action.payload.projectIdx].chats.push(action.payload.chat)
+    },
+    deleteChatFromProject: (state, action: PayloadAction<{projectId: string, chatId: string}>) => {
+        let projectIdx = state.allProjects.findIndex((project) => project._id == action.payload.projectId)
+        state.allProjects[projectIdx].chats = state.allProjects[projectIdx].chats.filter((chat) => chat._id != action.payload.chatId)
     }
   }
 })
 
-export const { addProject, deleteProject, renameProject, addChatToProject } = projectsSlice.actions
+export const { addProject, deleteProject, renameProject, addChatToProject, deleteChatFromProject } = projectsSlice.actions
 export default projectsSlice.reducer

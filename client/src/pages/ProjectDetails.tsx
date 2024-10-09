@@ -68,7 +68,7 @@ export default function ProjectDetails() {
                     {
                         !editMode ?
                             <>
-                                <h2 className="text-3xl font-semibold mr-4">
+                                <h2 className="text-3xl font-semibold mr-4 capitalize">
                                     {project?.name}
                                 </h2>
                                 <TooltipProvider>

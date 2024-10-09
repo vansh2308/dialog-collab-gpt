@@ -14,10 +14,13 @@ export default function App({ }) {
 
 
   useEffect(() => {
-    let user =  JSON.parse(localStorage.getItem('user') || '{}') 
+    let user = JSON.parse(window.localStorage.getItem('user') || '{}')
+
     dispatch(setUser(user))
     navigate(`/${user._id}`)
   }, [])
+
+
 
 
   return (

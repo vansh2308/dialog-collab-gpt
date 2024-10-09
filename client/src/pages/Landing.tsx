@@ -17,10 +17,10 @@ export default function Landing() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     // console.log(user)
-    //     // user && navigate(`/${user?.id}`)
-    // }, [user])
+    useEffect(() => {
+        // console.log(user)
+        // user && navigate(`/${user?.id}`)
+    }, [user])
 
 
     const responseGoogle = async (authResult: any) => {
@@ -45,8 +45,6 @@ export default function Landing() {
         onError: responseGoogle,
         flow: "auth-code",
     });
-
-
 
     return (
         <div className="w-full h-full bg-black relative">

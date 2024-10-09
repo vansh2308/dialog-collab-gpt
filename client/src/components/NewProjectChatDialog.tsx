@@ -52,7 +52,7 @@ export default function NewProjectChatDialog({user, project}: {user: userType, p
                         <Label htmlFor="name" className="text-right">
                             Name
                         </Label>
-                        <Input id="name" placeholder={nameVal} className="col-span-3" onChange={(e) => setNameVal(e.target.value)} />
+                        <Input autoComplete="off" id="name" placeholder={nameVal} className="col-span-3" onChange={(e) => setNameVal(e.target.value)} />
                     </div>
                 </div>
                 <DialogFooter>
