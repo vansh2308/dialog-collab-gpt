@@ -7,10 +7,11 @@ import { json } from "stream/consumers";
 
 
 export default function Chat({ }) {
-    let { chatId } = useParams();
+    let { projectId, chatId } = useParams();
 
     // WIP: Fetch chat from backend 
     const allChats = useSelector((state: RootState) => state.chats.allChats)
+    const allProjects = useSelector((state: RootState) => state.projects.allProjects) 
     const [chat, setChat] = useState<chatType>()
     const chatRef = useRef() as React.MutableRefObject<HTMLDivElement>
     
@@ -20,7 +21,12 @@ export default function Chat({ }) {
     };
 
     useEffect(() => {
-        setChat(allChats.filter((chat) => chat._id == chatId)[0])
+        if(!projectId){
+            setChat(allChats.filter((chat) => chat._id == chatId)[0])
+        } else {
+            let projectIdx = allProjects.findIndex((project) => project._id == projectId)
+            setChat(allProjects[projectIdx].chats.filter((chat) => chat._id == chatId)[0])
+        }
         // scrollToBottom()
     })
 

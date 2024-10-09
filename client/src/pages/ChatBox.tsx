@@ -11,6 +11,8 @@ import { addPrompt } from "@/features/chatsSlice";
 import { Outlet, useParams } from "react-router-dom";
 import { version } from "os";
 import { promptType } from "@/types";
+import { addPromptToProjectChat } from "@/features/projectsSlice";
+import { v4 as uuid } from 'uuid'
 
 
 export default function ChatBox() {
@@ -18,24 +20,34 @@ export default function ChatBox() {
     const [promptValue, setPromptValue] = useState<string>("Give me a Startup Idea...")
     const dispatch = useDispatch()
     const allChats = useSelector((state: RootState) => state.chats.allChats)
-    let { chatId } = useParams();
+    let { projectId, chatId } = useParams();
 
-    
+
 
     const handlePromptSubmit = () => {
-        let chatIdx = allChats.findIndex(chat => chat._id == chatId)
+        if (projectId) {
+            let newPrompt: promptType = [{
+                version: 0,
+                madeBy: user,
+                question: promptValue,
+                reply: "Just a demo reply",
+                _id: uuid()
+            }]
 
-        // WIP: Fetch reply from API key 
-        let newPrompt: promptType = [{
-            version: 0,
-            madeBy: user,
-            question: promptValue,
-            reply: "Just a demo reply",
-            _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
-        }]
+            dispatch(addPromptToProjectChat({projectId, chatId: chatId!, newPrompt}))
+        } else {
+            let chatIdx = allChats.findIndex(chat => chat._id == chatId)
 
-        dispatch(addPrompt({ idx: chatIdx, newPrompt }))
-
+            // WIP: Fetch reply from API key 
+            let newPrompt: promptType = [{
+                version: 0,
+                madeBy: user,
+                question: promptValue,
+                reply: "Just a demo reply",
+                _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
+            }]
+            dispatch(addPrompt({ idx: chatIdx, newPrompt }))
+        }
     }
 
     return (

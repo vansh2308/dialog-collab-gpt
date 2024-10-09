@@ -30,7 +30,7 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
 
     return (
         <Link
-            to={`/${user?._id}/${chat._id}`}
+            to={`/${user?._id}/project/${projectId}/${chat._id}`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
@@ -47,7 +47,7 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
                     <CardDescription className="text-xs"> Created: {chat.dateCreated.toDateString()} </CardDescription>
                 </CardHeader>
 
-                {/* WIP: Last edit  */}
+
                 <CardFooter className="flex flex-col items-start gap-3 overflow-hidden">
                     <p className="text-xs font-medium ">Last Edited by</p>
                     {

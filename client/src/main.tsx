@@ -37,6 +37,10 @@ const router = createBrowserRouter([
               {
                 path: ":chatId",
                 element: <Chat />
+              },
+              {
+                path: "project/:projectId/:chatId",
+                element: <Chat />
               }
             ]
           },
@@ -46,7 +50,6 @@ const router = createBrowserRouter([
           }
         ]
       }
-
     ]
   },
 ]);

@@ -111,7 +111,7 @@ export default function ProjectDetails() {
             <div className="grid-cols-4 mt-10 grid gap-6">
                 {
                     project?.chats.map((chat) => (
-                        <ProjectCardTile chat={chat} />
+                        <ProjectCardTile chat={chat} key={chat._id} />
                     ))
 
 
