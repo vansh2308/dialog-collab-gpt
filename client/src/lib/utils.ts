@@ -63,6 +63,10 @@ export const createNewProject = ({
     dateCreated: new Date(),
     chats: [],
     _id,
-    members: [owner]
+    members: [{
+      user: owner,
+      status: "Owner"
+    }],
+    inviteLink: `http://localhost:5173/${owner?._id}/project/${_id}`
   })
 }

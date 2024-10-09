@@ -1,9 +1,14 @@
 import { RootState } from "@/app/store"
 import { projectType } from "@/types"
 import { useEffect, useState } from "react"
+
+
+
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { FaPencil } from "react-icons/fa6";
+
+
 import {
     Tooltip,
     TooltipContent,
@@ -11,21 +16,15 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Input } from "@/components/ui/input"
+
 import { MdDelete } from "react-icons/md";
 import { deleteProject, renameProject } from "@/features/projectsSlice"
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
+
+
+import TeamManagement from "@/components/TeamManagement";
+import NewProjectChatDialog from "@/components/NewProjectChatDialog"
+import ProjectCardTile from "@/components/ProjectCardTile"
 
 
 
@@ -43,6 +42,7 @@ export default function ProjectDetails() {
     useEffect(() => {
         setProject(allProjects.filter((project) => project._id == projectId)[0])
     })
+
 
     const handleRename = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
@@ -103,33 +103,23 @@ export default function ProjectDetails() {
                     }
                 </div>
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <div className="flex pr-5 cursor-pointer">
-                            <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src={user?.image} alt="@shadcn" /> </Avatar>
-                            <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> </Avatar>
-                            <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> </Avatar>
-                            <Avatar className="border-4 border-popover -mr-3">
-                                <AvatarImage src="" alt="@shadcn" />
-                                <AvatarFallback className="bg-accent">+2</AvatarFallback>
-                            </Avatar>
-                        </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="mr-10 mt-3">
-                        <DropdownMenuLabel>My Account laodkadananannassnj</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Billing</DropdownMenuItem>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <TeamManagement project={project!} user={user} />
+            </div>
+
+            <NewProjectChatDialog user={user} project={project!} />
+
+            <div className="grid-cols-4 mt-10 grid gap-6">
+                {
+                    project?.chats.map((chat) => (
+                        <ProjectCardTile chat={chat} />
+                    ))
 
 
-
-
+                }
 
             </div>
+
+
 
         </div>
     )

@@ -28,10 +28,12 @@ export const projectsSlice = createSlice({
     },
     renameProject: (state, action: PayloadAction<{projectIdx: number, newName: string}>) => {
         state.allProjects[action.payload.projectIdx].name = action.payload.newName
+    },
+    addChatToProject: (state, action: PayloadAction<{projectIdx: number, chat: chatType}>) => {
+        state.allProjects[action.payload.projectIdx].chats.push(action.payload.chat)
     }
-
   }
 })
 
-export const { addProject, deleteProject, renameProject } = projectsSlice.actions
+export const { addProject, deleteProject, renameProject, addChatToProject } = projectsSlice.actions
 export default projectsSlice.reducer

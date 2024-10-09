@@ -42,7 +42,7 @@ const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, user
             onMouseLeave={() => setHover(false)}
         >
             {!editMode ?
-                <h3 onDoubleClick={() => setEditMode(true)}> {chatName} </h3> :
+                <h3 className="capitalize" onDoubleClick={() => setEditMode(true)}> {chatName} </h3> :
                 <Input type="text" className="text-xs p-0 py-0 h-fit" onKeyDown={(e) => handleSubmit(e)} />
             }
 

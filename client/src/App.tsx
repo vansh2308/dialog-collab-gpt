@@ -1,6 +1,6 @@
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "./components/themeProvider";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -10,10 +10,14 @@ import { setUser } from "./features/userSlice";
 
 export default function App({ }) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+
   useEffect(() => {
     let user =  JSON.parse(localStorage.getItem('user') || '{}') 
     dispatch(setUser(user))
-  })
+    navigate(`/${user._id}`)
+  }, [])
 
 
   return (

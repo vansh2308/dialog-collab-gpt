@@ -29,12 +29,15 @@ export type chatType = {
     _id: string
 }
 
-
 export type projectType = {
     owner: userType,
     name: string,
     dateCreated: Date,
     chats: chatType[],
     _id: string,
-    members: userType[]
+    members: {
+        user: userType,
+        status: 'Owner' | 'Active' | 'Invite Sent'
+    }[],
+    inviteLink: string,
 }
