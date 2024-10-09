@@ -1,15 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaMeteor } from "react-icons/fa";
 import { FaPaperclip } from "react-icons/fa6";
 import { FaArrowUp } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useEffect, useState } from "react";
-import { createNewChat, createNewPrompt } from "@/lib/utils";
+import { useState } from "react";
 import { addPrompt } from "@/features/chatsSlice";
 import { Outlet, useParams } from "react-router-dom";
-import { version } from "os";
 import { promptType } from "@/types";
 import { addPromptToProjectChat } from "@/features/projectsSlice";
 import { v4 as uuid } from 'uuid'

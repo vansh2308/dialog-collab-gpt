@@ -23,6 +23,7 @@ import ChatTile from "@/components/ChatTile";
 import { Item } from "@radix-ui/react-menubar";
 import { addProject } from "@/features/projectsSlice";
 import ProjectTile from "@/components/ProjectTile";
+import { setUser } from "@/features/userSlice";
 
 
 
@@ -51,6 +52,13 @@ export default function Home() {
         dispatch(addProject(newProject))
     }
 
+    const handleLogout = () => {
+        // WIP: Set user.active = false in mongo collection 
+        dispatch(setUser(null))
+        localStorage.clear()
+        navigate('/')
+    }
+
 
     return (
         <div className="w-screen h-screen flex flex-col  text-card-foreground">
@@ -67,7 +75,12 @@ export default function Home() {
                         <MenubarItem>Hey {user?.name.slice(0, user.name.indexOf(' '))} ! </MenubarItem>
                         <MenubarSeparator />
                         <MenubarItem>Settings</MenubarItem>
-                        <MenubarItem>Logout</MenubarItem>
+                        <MenubarItem
+                            className="cursor-pointer text-destructive font-semibold hover:!text-destructive"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </MenubarItem>
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
