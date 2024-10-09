@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { deleteChat, renameChat } from "@/features/chatsSlice"
 import { RootState } from "@/app/store"
 
-const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined }) => {
-    const [chatName, setChatName] = useState(item.name)
+const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, userId: string | undefined }) => {
+    const [chatName, setChatName] = useState(name)
     const [editMode, setEditMode] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -16,10 +16,9 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
     const allChats = useSelector((state: RootState) => state.chats.allChats)
 
 
-    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
 
-        dispatch(deleteChat(item._id))
+    const handleDelete = () => {
+        dispatch(deleteChat(chatId))
         navigate(`/${userId}`)
     }
 
@@ -30,14 +29,14 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
             setChatName(newName)
             setEditMode(false)
 
-            let chatIdx = allChats.findIndex(chat => chat._id == item._id)
+            let chatIdx = allChats.findIndex(chat => chat._id == chatId)
             dispatch(renameChat({ idx: chatIdx, newName: newName }))
         }
     }
 
     return (
         <NavLink
-            to={`/${userId}/${item._id}`}
+            to={`/${userId}/${chatId}`}
             className={({ isActive }) => isActive ? "flex justify-between items-center p-3 rounded-lg bg-accent" : "flex justify-between items-center p-3 rounded-lg"}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
@@ -47,10 +46,9 @@ const ChatTile = ({ item, userId }: { item: chatType, userId: string | undefined
                 <Input type="text" className="text-xs p-0 py-0 h-fit" onKeyDown={(e) => handleSubmit(e)} />
             }
 
-            {/* WIP: Deletion is not working fine */}
             <button
                 className={`text-lg ${!hover ? 'opacity-0' : 'opacity-100'}`}
-                onClick={e => handleDelete(e)}
+                onClick={handleDelete}
             >
                 <MdDelete />
             </button>

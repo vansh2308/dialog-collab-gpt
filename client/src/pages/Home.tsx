@@ -36,10 +36,9 @@ export default function Home() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        console.log(allProjects)
-    }, [allProjects])
+    // useEffect(() => {
+    //     console.log(allProjects)
+    // }, [allProjects])
 
 
 
@@ -108,8 +107,8 @@ export default function Home() {
 
                         {
                             allProjects.length == 0 ? <h4>No Project. Create one!</h4> :
-                                allProjects.map((project, key) => (
-                                    <ProjectTile project={project} userId={user?._id} key={key} />
+                                allProjects.map((project) => (
+                                    <ProjectTile project={project} userId={user?._id} key={project._id} />
                                 ))
                         }
                     </div>
@@ -137,8 +136,8 @@ export default function Home() {
                         {/* WIP: Fix filter  */}
                         {
                             allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                allChats.map((item, key) => (
-                                    <ChatTile item={item} userId={user?._id} key={key} />
+                                allChats.map((chat) => (
+                                    <ChatTile name={chat.name} chatId={chat._id} userId={user?._id} key={chat._id} />
                                 ))
                         }
                     </div>

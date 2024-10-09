@@ -27,7 +27,6 @@ export const projectsSlice = createSlice({
         state.allProjects = state.allProjects.filter((project) => project._id != action.payload)
     },
     renameProject: (state, action: PayloadAction<{projectIdx: number, newName: string}>) => {
-        
         state.allProjects[action.payload.projectIdx].name = action.payload.newName
     }
 
