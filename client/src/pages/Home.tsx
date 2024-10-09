@@ -36,15 +36,10 @@ export default function Home() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     console.log(allProjects)
-    // }, [allProjects])
-
 
 
     const handleStartChat = () => {
         let newChat = createNewChat({ owner: user, name: "Untitled Chat", question: null, _id: (allChats.length + 1).toString() })
-
         navigate(`/${user?._id}/${newChat._id}`)
         dispatch(addChat(newChat))
     }
@@ -52,7 +47,6 @@ export default function Home() {
 
     const handleCreateProject = () => {
         let newProject = createNewProject({ owner: user, name: "Untitled Project", _id: `p100${allProjects.length + 1}` })
-
         navigate(`/${user?._id}/project/${newProject._id}`)
         dispatch(addProject(newProject))
     }
@@ -107,7 +101,7 @@ export default function Home() {
 
                         {
                             allProjects.length == 0 ? <h4>No Project. Create one!</h4> :
-                                allProjects.map((project) => (
+                                allProjects.filter((project) => project.name.toLowerCase().includes(filterText.toLowerCase())).map((project) => (
                                     <ProjectTile project={project} userId={user?._id} key={project._id} />
                                 ))
                         }
@@ -133,10 +127,9 @@ export default function Home() {
                         <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
 
 
-                        {/* WIP: Fix filter  */}
                         {
                             allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                allChats.map((chat) => (
+                                allChats.filter((chat) => chat.name.toLowerCase().includes(filterText.toLowerCase())).map((chat) => (
                                     <ChatTile name={chat.name} chatId={chat._id} userId={user?._id} key={chat._id} />
                                 ))
                         }
