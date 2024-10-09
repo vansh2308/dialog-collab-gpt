@@ -1,31 +1,24 @@
 import { RootState } from "@/app/store";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from "@/components/ui/menubar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { FaMeteor } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Button } from "@/components/ui/button";
 import { IoIosAddCircle } from "react-icons/io";
 import { createNewChat, createNewProject } from "@/lib/utils";
 import { addChat } from "@/features/chatsSlice";
-import { chatType } from "@/types";
-import { SlOptions } from "react-icons/sl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChatTile from "@/components/ChatTile";
-import { Item } from "@radix-ui/react-menubar";
 import { addProject } from "@/features/projectsSlice";
 import ProjectTile from "@/components/ProjectTile";
 import { setUser } from "@/features/userSlice";
-
-
 
 
 

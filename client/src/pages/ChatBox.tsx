@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid'
 
 export default function ChatBox() {
     const user = useSelector((state: RootState) => state.user.value)
-    const [promptValue, setPromptValue] = useState<string>("Give me a Startup Idea...")
+    const [promptValue, setPromptValue] = useState<string>('')
     const dispatch = useDispatch()
     const allChats = useSelector((state: RootState) => state.chats.allChats)
     let { projectId, chatId } = useParams();
@@ -47,6 +47,15 @@ export default function ChatBox() {
         }
     }
 
+    const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key == 'Enter'){
+            handlePromptSubmit()
+            setPromptValue('')
+        }
+    }
+
+    
+
     return (
 
         <div className="w-full h-full relative p-6 flex flex-col gap-5">
@@ -65,7 +74,9 @@ export default function ChatBox() {
                     type="text"
                     placeholder={"Give me a startup idea..."}
                     className="h-full"
+                    value={promptValue}
                     onChange={(e) => setPromptValue(e.target.value)}
+                    onKeyDown={(e) => handleInputEnter(e)}
                 />
 
                 <Button variant="secondary" className="h-full aspect-square rounded-full hover:bg-popover bg-popover/50"
