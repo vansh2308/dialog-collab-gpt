@@ -1,11 +1,11 @@
-const { chat } = require("googleapis/build/src/apis/chat");
+
 const Chat = require("../models/chatModel")
 const User = require('../models/userModel')
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
 const getAllChats = async (req, res, next) => {
-    const { userId } = req.body
+    let userId = req.query.userId
     if(!userId){
         res.status(400).send('User ID required')
     }
@@ -16,7 +16,6 @@ const getAllChats = async (req, res, next) => {
 
     }
 }
-
 
 const createChat = async (req, res, next) => {
     if(!req.body.userId){
@@ -48,9 +47,7 @@ const updateChat = async (req, res, next) => {
         // WIP: Implement add prompts to chat 
         res.status(200).send('Chat renamed')
     } catch(err) {
-
     }
-
 }
 
 const deleteChat = async (req, res, next) => {

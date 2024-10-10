@@ -14,26 +14,28 @@ import {
 import { IoIosAddCircle } from "react-icons/io";
 import { createNewChat, createNewProject } from "@/lib/utils";
 import { addChat } from "@/features/chatsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatTile from "@/components/ChatTile";
 import { addProject } from "@/features/projectsSlice";
 import ProjectTile from "@/components/ProjectTile";
 import { setUser } from "@/features/userSlice";
+import useFetchUserChats from "@/app/hooks/useFetchUserChats";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 
 export default function Home() {
+    const { allChats, loading } = useFetchUserChats()
+
     const user = useSelector((state: RootState) => state.user.value)
-    const allChats = useSelector((state: RootState) => state.chats.allChats)
     const allProjects = useSelector((state: RootState) => state.projects.allProjects)
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
 
-
     const handleStartChat = () => {
-        let newChat = createNewChat({ owner: user, name: "Untitled Chat", question: null, _id: (allChats.length + 1).toString() })
+        let newChat = createNewChat({ owner: user, name: "Untitled Chat", question: null, _id: (allChats!.length + 1).toString() })
         navigate(`/${user?._id}/${newChat._id}`)
         dispatch(addChat(newChat))
     }
@@ -127,18 +129,22 @@ export default function Home() {
                         </TooltipProvider>
                     </div>
                     <div className="max-h-[30vh] h-fit  overflow-y-scroll text-center text-foreground text-xs">
-                        {/* <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                        <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
-
-
                         {
-                            allChats.length == 0 ? <h4>No Chats. Start one!</h4> :
-                                allChats.filter((chat) => chat.name.toLowerCase().includes(filterText.toLowerCase())).map((chat) => (
-                                    <ChatTile name={chat.name} chatId={chat._id} userId={user?._id} key={chat._id} />
-                                ))
+                            loading ?
+                                <>
+                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                                </> :
+
+                                allChats!.length == 0 ? <h4>No Chats. Start one!</h4> :
+                                    allChats!.filter((chat) => chat.name.toLowerCase().includes(filterText.toLowerCase())).map((chat) => (
+                                        <ChatTile name={chat.name} chatId={chat._id} userId={user?._id} key={chat._id} />
+                                    ))
+
                         }
+
                     </div>
                 </div>
 

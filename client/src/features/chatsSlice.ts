@@ -20,6 +20,9 @@ export const chatsSlice = createSlice({
   name: 'chats',
   initialState,
   reducers: {
+    setUserChats: (state, action: PayloadAction<chatType[]>) => {
+      state.allChats = action.payload
+    },
     addChat: (state, action: PayloadAction<chatType>) => {
       state.allChats.push(action.payload)
     },
@@ -35,5 +38,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { addChat, deleteChat, renameChat, addPrompt} = chatsSlice.actions
+export const { setUserChats, addChat, deleteChat, renameChat, addPrompt} = chatsSlice.actions
 export default chatsSlice.reducer
