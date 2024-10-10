@@ -54,12 +54,12 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
                         <div className="flex gap-3 max-w-[100%]">
                             <Avatar className="border-3 border-popover">
                                 <AvatarImage
-                                    src={chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0][0].madeBy?.image : user?.image}
+                                    src={chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0].madeBy?.image : user?.image}
                                 />
                             </Avatar>
                             <div className="flex flex-col gap-1 flex-1">
-                                <h5 className="text-xs text-nowrap overflow-x-hidden"> {chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0][0].madeBy?.name : user?.name} </h5>
-                                <span className="text-muted-foreground text-[0.65rem] text-nowrap overflow-x-hidden"> {chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0][0].madeBy?.email : user?.email} </span>
+                                <h5 className="text-xs text-nowrap overflow-x-hidden"> {chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0].madeBy?.name : user?.name} </h5>
+                                <span className="text-muted-foreground text-[0.65rem] text-nowrap overflow-x-hidden"> {chat?.allPrompts?.length ? chat.allPrompts?.slice(-1)[0].madeBy?.email : user?.email} </span>
                             </div>
                         </div>
                     }

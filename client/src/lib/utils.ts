@@ -22,7 +22,7 @@ export const createNewChat = ({
     owner,
     name,
     allPrompts: (question && question.length) ?
-      [createNewPrompt({ version: 1, madeBy: owner, question: question, reply: "", _id: "1" })] : [],
+      [createNewPrompt({madeBy: owner, question: question, reply: "", _id: "1" })] : [],
     dateCreated: new Date(),
     _id
   }
@@ -30,21 +30,17 @@ export const createNewChat = ({
 
 
 export const createNewPrompt = ({
-  version,
   madeBy,
   question,
   reply,
   _id
 }: {
-  version: number,
   madeBy: userType,
   question: string,
   reply: string,
   _id: string
 }): promptType => {
-  return [
-    { version, madeBy, question, reply, _id }
-  ]
+  return {  madeBy, question, reply, _id }
 }
 
 

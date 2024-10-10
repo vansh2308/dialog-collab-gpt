@@ -2,15 +2,13 @@
 
 /* eslint-disable prefer-arrow-callback */
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcrypt');
 
-const promptSchema = new mongoose.Schema([{
-    version: Number,
+
+const promptSchema = new mongoose.Schema({
     madeBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     question: String,
     reply: String,
-}])
+})
 
 
 const chatSchema = new mongoose.Schema(
@@ -39,5 +37,4 @@ const chatSchema = new mongoose.Schema(
 
 
 const Chat = mongoose.model('Chat', chatSchema);
-
 module.exports = Chat;

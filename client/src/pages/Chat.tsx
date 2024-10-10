@@ -45,10 +45,10 @@ export default function Chat({ }) {
                         <>
                             <div className="self-end flex gap-5 mt-6">
                                 <div className="p-4 h-fit px-4 bg-primary max-w-[35vw] text-foreground rounded-2xl text-sm">
-                                    {prompt[0].question}
+                                    {prompt.question}
                                 </div>
                                 <Avatar className="">
-                                    <AvatarImage src={prompt[0].madeBy?.image} />
+                                    <AvatarImage src={prompt.madeBy?.image} />
                                 </Avatar>
                             </div>
 
@@ -59,7 +59,7 @@ export default function Chat({ }) {
                                     />
                                 </Avatar>
                                 <div className="max-w-[65vw] w-fit text-foreground rounded-2xl text-sm">
-                                    {prompt[0].reply}
+                                    {prompt.reply}
                                 </div>
                             </div>
 

@@ -1,6 +1,8 @@
 
+const { default: mongoose } = require("mongoose");
 const Chat = require("../models/chatModel")
-const User = require('../models/userModel')
+const User = require('../models/userModel');
+
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -11,9 +13,8 @@ const getAllChats = async (req, res, next) => {
     }
     try {
         let allChats = await Chat.find({owner: new ObjectId(userId) })
-        res.status(200).json(allChats)
+        res.status(200).json(allChats)        
     } catch {
-
     }
 }
 
@@ -43,9 +44,25 @@ const updateChat = async (req, res, next) => {
             await Chat.updateOne({ _id: new ObjectId(chatId) }, {
                 name: req.body.name
             })
+            res.status(200).send('Chat renamed')
+
+        } else if (req.body.type == 'add prompt'){
+            let response = await Chat.findOneAndUpdate({  _id: new ObjectId(chatId) }, {
+              $push: {
+                allPrompts: req.body.prompt
+              }  
+            }, {new: true})
+            let madeByUser = await User.findById(response.allPrompts.slice(-1)[0].madeBy._id)
+            let insertedPrompt = response.allPrompts.slice(-1)[0]
+            insertedPrompt = {
+                question: insertedPrompt.question,
+                reply: insertedPrompt.reply,
+                madeBy: madeByUser,
+                _id: insertedPrompt._id
+            }
+            res.status(200).json( insertedPrompt )
         }
-        // WIP: Implement add prompts to chat 
-        res.status(200).send('Chat renamed')
+ 
     } catch(err) {
     }
 }
@@ -62,8 +79,6 @@ const deleteChat = async (req, res, next) => {
 
     }
 }
-
-
 
 module.exports = {
     getAllChats,

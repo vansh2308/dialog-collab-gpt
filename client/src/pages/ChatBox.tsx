@@ -10,6 +10,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { promptType } from "@/types";
 import { addPromptToProjectChat } from "@/features/projectsSlice";
 import { v4 as uuid } from 'uuid'
+import axios from "axios";
 
 
 export default function ChatBox() {
@@ -20,30 +21,41 @@ export default function ChatBox() {
     let { projectId, chatId } = useParams();
 
 
-
-    const handlePromptSubmit = () => {
+    const handlePromptSubmit = async () => {
         if (projectId) {
-            let newPrompt: promptType = [{
-                version: 0,
+            let newPrompt: promptType = {
                 madeBy: user,
                 question: promptValue,
                 reply: "Just a demo reply",
                 _id: uuid()
-            }]
+            }
 
             dispatch(addPromptToProjectChat({projectId, chatId: chatId!, newPrompt}))
         } else {
             let chatIdx = allChats.findIndex(chat => chat._id == chatId)
 
             // WIP: Fetch reply from OpenAI API key 
-            let newPrompt: promptType = [{
-                version: 0,
-                madeBy: user,
-                question: promptValue,
-                reply: "Just a demo reply",
-                _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
-            }]
-            dispatch(addPrompt({ idx: chatIdx, newPrompt }))
+            let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                type: "add prompt",
+                prompt: {
+                    madeBy: user?._id,
+                    question: promptValue,
+                    reply: "Just a demo reply",
+                }
+            })
+
+            console.log(response)
+
+            dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
+
+
+            // let newPrompt: promptType = {
+            //     madeBy: user,
+            //     question: promptValue,
+            //     reply: "Just a demo reply",
+            //     _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
+            // }
+            // dispatch(addPrompt({ idx: chatIdx, newPrompt }))
         }
     }
 
@@ -55,7 +67,6 @@ export default function ChatBox() {
     }
 
     
-
     return (
 
         <div className="w-full h-full relative p-6 flex flex-col gap-5">

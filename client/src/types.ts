@@ -14,12 +14,11 @@ export type userType = {
 
 
 export type promptType = {
-    version: number,
     madeBy: userType,
     question: string,
     reply: string,
     _id: string
-}[]
+}
 
 export type chatType = {
     owner: userType,
