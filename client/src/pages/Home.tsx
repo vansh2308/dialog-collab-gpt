@@ -40,7 +40,7 @@ export default function Home() {
             name: "Untitled Chat",
             userId: user?._id
         })
-        if(response.status == 200){   
+        if (response.status == 201) {
             dispatch(addChat(response.data))
             navigate(`/${user?._id}/${response.data._id}`)
         }
@@ -65,7 +65,10 @@ export default function Home() {
         <div className="w-screen h-screen flex flex-col  text-card-foreground">
 
             <Menubar className="w-full bg-popover border-none rounded-none p-5 px-12 flex justify-between items-center h-[10vh]">
-                <FaMeteor className="text-[2.5rem] text-popover-foreground" onClick={() => navigate("/")} />
+                <FaMeteor
+                    className="text-[2.5rem] text-popover-foreground"
+                // onClick={() => navigate("/")}
+                />
                 <MenubarMenu>
                     <MenubarTrigger className="focus:bg-popover w-fit h-fit p-0 rounded-full">
                         <Avatar>
