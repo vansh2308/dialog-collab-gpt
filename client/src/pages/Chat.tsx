@@ -1,5 +1,7 @@
 import { RootState } from "@/app/store";
+import { Avatar } from "@/components/ui/avatar";
 import { chatType, promptType } from "@/types";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -40,11 +42,16 @@ export default function Chat({ }) {
                     return (
                         prompt &&
                         <>
-                            <div className="p-4 max-w-[50%] bg-primary text-foreground rounded-3xl text-sm self-end mt-7">
+                        <div className="self-end flex gap-5">
+                            <div className="p-4 bg-primary max-w-[35vw] text-foreground rounded-2xl text-sm">
                                 {prompt[0].question}
                             </div>
+                            <Avatar className="">
+                                <AvatarImage src={prompt[0].madeBy?.image} />
+                            </Avatar>
+                        </div>
 
-                            <div className="p-4 max-w-[65%] w-fit bg-accent text-foreground rounded-3xl text-sm">
+                            <div className="p-4 max-w-[65vw] w-fit bg-accent text-foreground rounded-2xl text-sm">
                                 {prompt[0].reply}
                             </div>
                         </>
