@@ -35,7 +35,7 @@ export default function ChatBox() {
         } else {
             let chatIdx = allChats.findIndex(chat => chat._id == chatId)
 
-            // WIP: Fetch reply from API key 
+            // WIP: Fetch reply from OpenAI API key 
             let newPrompt: promptType = [{
                 version: 0,
                 madeBy: user,

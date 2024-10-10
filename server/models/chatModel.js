@@ -1,5 +1,17 @@
 
 
+/* eslint-disable prefer-arrow-callback */
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcrypt');
+
+const promptSchema = new mongoose.Schema([{
+    version: Number,
+    madeBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    question: String,
+    reply: String,
+}])
+
 
 const chatSchema = new mongoose.Schema(
     {
@@ -8,29 +20,16 @@ const chatSchema = new mongoose.Schema(
             required: [true, 'User must have a name. Please provide name'],
             trim: true,
         },
-        email: {
-            type: String,
-            required: [
-                true,
-                'Every User must have a unique Email. Please provide Email',
-            ],
-            unique: [true, 'Email already in use'],
-            validate: [validator.isEmail, 'Invalid Email'],
-            lowercase: true,
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
         },
-        dateJoined: {
+        dateCreated: {
             type: Date,
-            default: Date.now(),
+            default: Date.now()
         },
-        image: String,
-        admin: {
-            type: Boolean,
-            default: false,
-        },
-        active: {
-            type: Boolean,
-            default: true,
-        },
+        allPrompts: [promptSchema]
     },
     {
         toJSON: { virtuals: true },
@@ -38,21 +37,7 @@ const chatSchema = new mongoose.Schema(
     }
 );
 
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
 
-    this.password = await bcrypt.hash(this.password, 12);
+const Chat = mongoose.model('Chat', chatSchema);
 
-    this.passwordConfirm = undefined;
-    next();
-});
-userSchema.methods.correctPassword = async function (
-    candidatePassword,
-    userPassword
-) {
-    return await bcrypt.compare(candidatePassword, userPassword);
-};
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = Chat;

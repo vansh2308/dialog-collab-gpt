@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const { Schema } = require('mongoose')
 
 const userSchema = new mongoose.Schema(
     {
@@ -33,6 +34,17 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        chats: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Chat',
+            default: []
+            
+        }],
+        projects: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Project',
+            default: []
+        }]
     },
     {
         toJSON: { virtuals: true },

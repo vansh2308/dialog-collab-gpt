@@ -22,7 +22,8 @@ const handleValidationError = err => {
 }
 
 const sendErrorDev = (err, req, res) => {
-	console.log(err);
+	// console.log(err);
+	console.log(err.message)
 
 	if (req.originalUrl.startsWith('/api')) {
 		res.status(err.statusCode).json({
