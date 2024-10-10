@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux"
 import { deleteChat, renameChat } from "@/features/chatsSlice"
 import { RootState } from "@/app/store"
+import axios from "axios";
 
 const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, userId: string | undefined }) => {
     const [chatName, setChatName] = useState(name)
@@ -17,20 +18,28 @@ const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, user
 
 
 
-    const handleDelete = () => {
-        dispatch(deleteChat(chatId))
-        navigate(`/${userId}`)
+    const handleDelete = async () => {
+        let response = await axios.delete(`http://localhost:8000/api/v1/chat/${chatId}`)
+        if(response.status == 200){
+            dispatch(deleteChat(chatId))
+            navigate(`/${userId}`)
+        }
     }
 
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         if (e.keyCode == 13) {
             let newName = e.target.value.trim() == "" ? "Untitled" : e.target.value
-            setChatName(newName)
-            setEditMode(false)
-
-            let chatIdx = allChats.findIndex(chat => chat._id == chatId)
-            dispatch(renameChat({ idx: chatIdx, newName: newName }))
+            let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                type: "rename",
+                name: newName
+            })
+            if(response.status == 200){
+                setChatName(newName)
+                setEditMode(false)   
+                let chatIdx = allChats.findIndex(chat => chat._id == chatId)
+                dispatch(renameChat({ idx: chatIdx, newName: newName }))
+            }
         }
     }
 

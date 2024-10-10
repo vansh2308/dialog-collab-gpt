@@ -21,6 +21,7 @@ import ProjectTile from "@/components/ProjectTile";
 import { setUser } from "@/features/userSlice";
 import useFetchUserChats from "@/app/hooks/useFetchUserChats";
 import { Skeleton } from "@/components/ui/skeleton";
+import axios from "axios";
 
 
 
@@ -34,10 +35,15 @@ export default function Home() {
     const dispatch = useDispatch()
 
 
-    const handleStartChat = () => {
-        let newChat = createNewChat({ owner: user, name: "Untitled Chat", question: null, _id: (allChats!.length + 1).toString() })
-        navigate(`/${user?._id}/${newChat._id}`)
-        dispatch(addChat(newChat))
+    const handleStartChat = async () => {
+        let response = await axios.post('http://localhost:8000/api/v1/chat', {
+            name: "Untitled Chat",
+            userId: user?._id
+        })
+        if(response.status == 200){   
+            dispatch(addChat(response.data))
+            navigate(`/${user?._id}/${response.data._id}`)
+        }
     }
 
 
@@ -132,10 +138,10 @@ export default function Home() {
                         {
                             loading ?
                                 <>
-                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
-                                    <Skeleton className="h-6 mt-4 w-full rounded-full" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
                                 </> :
 
                                 allChats!.length == 0 ? <h4>No Chats. Start one!</h4> :

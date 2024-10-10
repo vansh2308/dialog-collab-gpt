@@ -32,11 +32,11 @@ export const chatsSlice = createSlice({
     renameChat: (state, action: PayloadAction<{ idx: number, newName: string }>) => {
       state.allChats[action.payload.idx].name = action.payload.newName
     },
-    addPrompt: (state, action: PayloadAction<{idx: number, newPrompt:promptType}>) => {
+    addPrompt: (state, action: PayloadAction<{ idx: number, newPrompt: promptType }>) => {
       state.allChats[action.payload.idx].allPrompts?.push(action.payload.newPrompt)
     }
   }
 })
 
-export const { setUserChats, addChat, deleteChat, renameChat, addPrompt} = chatsSlice.actions
+export const { setUserChats, addChat, deleteChat, renameChat, addPrompt } = chatsSlice.actions
 export default chatsSlice.reducer
