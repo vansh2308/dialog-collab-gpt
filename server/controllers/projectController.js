@@ -10,7 +10,6 @@ const getAllProjects = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
-        // let allChats = await Project.find({owner: new ObjectId(userId) })
         let allProjects = await Project.find( {owner: {_id: new ObjectId(userId)} } )
         res.status(200).json(allProjects)        
     } catch {

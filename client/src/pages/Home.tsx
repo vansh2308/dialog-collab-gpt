@@ -26,6 +26,7 @@ import axios from "axios";
 
 
 export default function Home() {
+
     const { allChats, loading } = useFetchUserChats()
 
     const user = useSelector((state: RootState) => state.user.value)
@@ -33,6 +34,7 @@ export default function Home() {
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
 
 
     const handleStartChat = async () => {
@@ -56,7 +58,6 @@ export default function Home() {
     const handleLogout = () => {
         // WIP: Set user.active = false in mongo collection 
         dispatch(setUser(null))
-        localStorage.clear()
         navigate('/')
     }
 
@@ -67,7 +68,7 @@ export default function Home() {
             <Menubar className="w-full bg-popover border-none rounded-none p-5 px-12 flex justify-between items-center h-[10vh]">
                 <FaMeteor
                     className="text-[2.5rem] text-popover-foreground"
-                // onClick={() => navigate("/")}
+                    // onClick={() => navigate("/")}
                 />
                 <MenubarMenu>
                     <MenubarTrigger className="focus:bg-popover w-fit h-fit p-0 rounded-full">
@@ -76,7 +77,7 @@ export default function Home() {
                         </Avatar>
                     </MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>Hey {user?.name.slice(0, user.name.indexOf(' '))} ! </MenubarItem>
+                        <MenubarItem>Hey {user?.name.slice(0, user!.name.indexOf(' '))} ! </MenubarItem>
                         <MenubarSeparator />
                         <MenubarItem>Settings</MenubarItem>
                         <MenubarItem

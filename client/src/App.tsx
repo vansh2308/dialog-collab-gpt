@@ -3,23 +3,23 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "./components/themeProvider";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./features/userSlice";
+import { RootState } from "./app/store";
 
 
 
 export default function App({ }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const user = useSelector((state: RootState) => state.user.value)
 
 
-  useEffect(() => {
-    let user = JSON.parse(window.localStorage.getItem('user') || '{}')
-
-    dispatch(setUser(user))
-    navigate(`/${user._id}`)
-  }, [])
-
+  useEffect(( ) => {
+    if(user){
+      navigate(`/${user?._id}`)
+    }
+  }, [user])
 
 
 
