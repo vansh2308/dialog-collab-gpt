@@ -36,7 +36,6 @@ export default function Home() {
     const dispatch = useDispatch()
 
 
-
     const handleStartChat = async () => {
         let response = await axios.post('http://localhost:8000/api/v1/chat', {
             name: "Untitled Chat",

@@ -17,6 +17,7 @@ export default function App({ }) {
 
   useEffect(( ) => {
     if(user){
+      dispatch(setUser(user))
       navigate(`/${user?._id}`)
     }
   }, [user])

@@ -24,7 +24,6 @@ export default function Landing() {
                 const result = await googleAuth(authResult.code);
 
                 dispatch(setUser(result.data.data.user))
-                // localStorage.setItem('user', JSON.stringify(result.data.data.user));
                 if(user){
                     navigate(`/${user?.id}`)
                 }

@@ -1,6 +1,6 @@
 
 const { default: mongoose } = require("mongoose");
-const Chat = require("../models/chatModel")
+const Chat = require("../models/chatModel");
 const User = require('../models/userModel');
 
 
@@ -12,7 +12,11 @@ const getAllChats = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
-        let allChats = await Chat.find({owner: new ObjectId(userId) })
+        // res.status(200).json(userId)
+        // let user  = await User.find( {_id : new ObjectId(userId)} )
+        // res.status(200).json(user)
+
+        let allChats = await Chat.find( {owner: new ObjectId(userId) })
         res.status(200).json(allChats)        
     } catch {
     }
