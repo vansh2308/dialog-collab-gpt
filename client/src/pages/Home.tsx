@@ -22,15 +22,17 @@ import { setUser } from "@/features/userSlice";
 import useFetchUserChats from "@/app/hooks/useFetchUserChats";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
+import useFetchUserProjects from "@/app/hooks/useFetchUserProjects";
 
 
 
 export default function Home() {
 
     const { allChats, loading } = useFetchUserChats()
+    const { allProjects, projectsLoading } = useFetchUserProjects()
 
     const user = useSelector((state: RootState) => state.user.value)
-    const allProjects = useSelector((state: RootState) => state.projects.allProjects)
+    // const allProjects = useSelector((state: RootState) => state.projects.allProjects)
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -48,10 +50,17 @@ export default function Home() {
     }
 
 
-    const handleCreateProject = () => {
-        let newProject = createNewProject({ owner: user, name: "Untitled Project", _id: `p100${allProjects.length + 1}` })
-        navigate(`/${user?._id}/project/${newProject._id}`)
-        dispatch(addProject(newProject))
+    const handleCreateProject = async () => {
+        let response = await axios.post('http://localhost:8000/api/v1/project', {
+            name: 'Untitled Project',
+            userId: user?._id
+        })
+
+        if(response.status == 201){
+            navigate(`/${user?._id}/project/${response.data._id}`)
+            dispatch(addProject(response.data))
+        }
+    
     }
 
     const handleLogout = () => {
@@ -117,6 +126,15 @@ export default function Home() {
                         <Skeleton className="h-6 mt-4 w-full rounded-full" /> */}
 
                         {
+                            projectsLoading ? 
+                            <>
+                                    
+                            <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                                    <Skeleton className="h-6 mt-4 w-full rounded-lg" />
+                            </> : 
+
                             allProjects.length == 0 ? <h4>No Project. Create one!</h4> :
                                 allProjects.filter((project) => project.name.toLowerCase().includes(filterText.toLowerCase())).map((project) => (
                                     <ProjectTile project={project} userId={user?._id} key={project._id} />

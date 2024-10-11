@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setUserChats } from '@/features/chatsSlice';
 import { useParams } from 'react-router-dom';
+import { setUserProjects } from '@/features/projectsSlice';
 
-const useFetchUserChats = () => {
-  const allChats = useSelector((state: RootState) => state.chats.allChats)
-  const [loading, setLoading] = useState(true);
+const useFetchUserProjects = () => {
+  const allProjects = useSelector((state: RootState) => state.projects.allProjects)
+  const [projectsLoading, setProjectsLoading] = useState(true);
   // const userId = useSelector((state: RootState) => state.user.value?._id)
   const { userId } = useParams()
   const dispatch = useDispatch()
@@ -18,16 +19,17 @@ const useFetchUserChats = () => {
     // console.log(userId)
     const fetchData = async () => {
       try {
-        const { data: response } = await axios.get('http://localhost:8000/api/v1/chats', {
+        const { data: response } = await axios.get('http://localhost:8000/api/v1/projects', {
           params: { userId: userId }
         });
+        
 
-        dispatch(setUserChats(response))
+        dispatch(setUserProjects(response))
       } catch (error) {
         console.error(error)
       }
       setTimeout(() => {
-        setLoading(false);
+        setProjectsLoading(false);
       }, 2000);
     };
 
@@ -35,9 +37,11 @@ const useFetchUserChats = () => {
   }, [userId]);
 
   return {
-    allChats,
-    loading,
+    allProjects,
+    projectsLoading,
   };
 };
 
-export default useFetchUserChats;
+export default useFetchUserProjects;
+
+

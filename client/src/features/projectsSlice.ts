@@ -20,6 +20,9 @@ export const projectsSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
+    setUserProjects: (state, action: PayloadAction<projectType[]>) => {
+        state.allProjects = action.payload
+    },
     addProject: (state, action: PayloadAction<projectType>)=>{
         state.allProjects.push(action.payload)
     },
@@ -44,5 +47,5 @@ export const projectsSlice = createSlice({
   }
 })
 
-export const { addProject, deleteProject, renameProject, addChatToProject, deleteChatFromProject, addPromptToProjectChat } = projectsSlice.actions
+export const { setUserProjects, addProject, deleteProject, renameProject, addChatToProject, deleteChatFromProject, addPromptToProjectChat } = projectsSlice.actions
 export default projectsSlice.reducer

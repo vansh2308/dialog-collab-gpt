@@ -25,6 +25,7 @@ import { deleteProject, renameProject } from "@/features/projectsSlice"
 import TeamManagement from "@/components/TeamManagement";
 import NewProjectChatDialog from "@/components/NewProjectChatDialog"
 import ProjectCardTile from "@/components/ProjectCardTile"
+import axios from "axios"
 
 
 
@@ -44,18 +45,28 @@ export default function ProjectDetails() {
     })
 
 
-    const handleRename = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleRename = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
             setEditMode(false)
             let newName = (e.target as HTMLInputElement).value.trim() == '' ? "Untitled Project" : (e.target as HTMLInputElement).value
 
-            let projectIdx = allProjects.findIndex(project => project._id == projectId)
-            dispatch(renameProject({ projectIdx, newName }))
+            let response = await axios.put(`http://localhost:8000/api/v1/project/${projectId}`, {
+                type: "rename",
+                name: newName
+            })
+            if(response.status == 200 || response.status == 201){
+                let projectIdx = allProjects.findIndex(project => project._id == projectId)
+                dispatch(renameProject({ projectIdx, newName }))
+            }
+
         }
     }
 
-    const handleDelete = () => {
-        dispatch(deleteProject(projectId))
+    const handleDelete = async () => {
+        let response = await axios.delete(`http://localhost:8000/api/v1/project/${projectId}`)
+        if(response.status == 200)[
+            dispatch(deleteProject(projectId))
+        ]
         navigate(`/${userId}`)
     }
 
