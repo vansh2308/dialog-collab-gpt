@@ -3,11 +3,16 @@ const { default: mongoose } = require("mongoose");
 const Chat = require("../models/chatModel");
 const User = require('../models/userModel');
 const dotenv = require('dotenv');
-const { OpenAI } = require('openai');
+// const { OpenAI } = require('openai');
+const { Groq } = require('groq-sdk');
 
 dotenv.config({ path: '../config.env' });
 
-const client = new OpenAI({
+// const client = new OpenAI({
+//     apiKey: process.env.OPENAI_API_KEY,
+// });
+
+const client = new Groq({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -106,13 +111,14 @@ const getPromptResponse = async (req, res, next) => {
 
         history.push({ role: 'user', content: prompt });
         
-        // const chatCompletion = await client.chat.completions.create({
-        //     messages: history,
-        //     model: 'gpt-3.5-turbo',
-        // });
-        // const reply = chatCompletion.choices[0];
+        const chatCompletion = await client.chat.completions.create({
+            messages: history,
+            // model: 'gpt-3.5-turbo',
+            model: 'gemma-7b-it',
+        });
+        const response = chatCompletion.choices[0].message.content;
 
-        response = 'Just a demo reply'
+        // response = 'Just a demo reply'
 
         res.status(200).json({ promptResponse: response })
     }
