@@ -2,7 +2,19 @@
 const { default: mongoose } = require("mongoose");
 const Chat = require("../models/chatModel");
 const User = require('../models/userModel');
+const dotenv = require('dotenv');
+// const { OpenAI } = require('openai');
+const { Groq } = require('groq-sdk');
 
+dotenv.config({ path: '../config.env' });
+
+// const client = new OpenAI({
+//     apiKey: process.env.OPENAI_API_KEY,
+// });
+
+const client = new Groq({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -84,9 +96,40 @@ const deleteChat = async (req, res, next) => {
     }
 }
 
+const getPromptResponse = async (req, res, next) => {
+    const {chatId} = req.params
+    const prompt = req.body.prompt;
+    try {
+        let chat = await Chat.findOne({_id: chatId})
+
+        let N = 3; // last N messages for history
+
+        let history = chat.allPrompts.slice(-N).flatMap(prompt => [
+            { role: 'user', content: prompt.question },
+            { role: 'assistant', content: prompt.reply }
+        ]);
+
+        history.push({ role: 'user', content: prompt });
+        
+        const chatCompletion = await client.chat.completions.create({
+            messages: history,
+            // model: 'gpt-3.5-turbo',
+            model: 'gemma-7b-it',
+        });
+        const response = chatCompletion.choices[0].message.content;
+
+        // response = 'Just a demo reply'
+
+        res.status(200).json({ promptResponse: response })
+    }
+    catch (err) {
+    }
+}
+
 module.exports = {
     getAllChats,
     createChat,
     updateChat,
-    deleteChat
+    deleteChat,
+    getPromptResponse,
 }
