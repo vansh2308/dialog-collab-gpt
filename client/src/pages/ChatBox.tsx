@@ -34,20 +34,30 @@ export default function ChatBox() {
         } else {
             let chatIdx = allChats.findIndex(chat => chat._id == chatId)
 
+            let responseMessage = 'FAILED_TO_GET_RESPONSE'
+            try {
+                const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                    prompt: promptValue
+                })
+                responseMessage = promptResponse.data.promptResponse;
+            } catch (err) {
+            }
+
             // WIP: Fetch reply from OpenAI API key 
-            let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
-                type: "add prompt",
-                prompt: {
-                    madeBy: user?._id,
-                    question: promptValue,
-                    reply: "Just a demo reply",
-                }
-            })
+            if (responseMessage !== 'FAILED_TO_GET_RESPONSE') {
+                let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                    type: "add prompt",
+                    prompt: {
+                        madeBy: user?._id,
+                        question: promptValue,
+                        reply: responseMessage,
+                    }
+                })
 
-            console.log(response)
+                console.log(response)
 
-            dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
-
+                dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
+            }
 
             // let newPrompt: promptType = {
             //     madeBy: user,
