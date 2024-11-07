@@ -19,21 +19,31 @@ import { projectType, userType } from "@/types"
 import { useDispatch, useSelector } from "react-redux"
 import { addChatToProject } from "@/features/projectsSlice"
 import { RootState } from "@/app/store"
+import axios from "axios"
 
 export default function NewProjectChatDialog({user, project}: {user: userType, project: projectType}) {
     const [nameVal, setNameVal] = useState("Untitled Chat")
     const allProjects = useSelector((state: RootState) => state.projects.allProjects)
     const dispatch = useDispatch()
 
-    const handleCreateNewProjectChat = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        let newChat = createNewChat({
-            owner: user, 
+
+    const handleCreateNewProjectChat = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        let response = await axios.post('http://localhost:8000/api/v1/chat', {
             name: !nameVal || nameVal.trim() == '' ? 'Untitled Chat':  nameVal,
-            question: null,
-            _id: `${project.chats.length}` 
-        })   
-        let projectIdx = allProjects.findIndex((item) => item._id == project._id)
-        dispatch(addChatToProject({projectIdx, chat: newChat}))
+            userId: user?._id,
+            projectId: project._id
+        })
+
+        if(response.status == 200 || response.status == 201){
+            let projectIdx = allProjects.findIndex((item) => item._id == project._id)
+            let newChat = createNewChat({
+                owner: user, 
+                name: response.data.name,
+                question: null,
+                _id: response.data._id 
+            })  
+            dispatch(addChatToProject({projectIdx, chat: newChat}))
+        }
     }
 
 

@@ -27,6 +27,10 @@ const chatSchema = new mongoose.Schema(
             type: Date,
             default: Date.now()
         },
+        projectId: {
+            type: mongoose.Schema.Types.ObjectId || null,
+            ref: 'Project',
+        },
         allPrompts: [promptSchema]
     },
     {

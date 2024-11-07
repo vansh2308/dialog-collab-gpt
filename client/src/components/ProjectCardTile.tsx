@@ -7,13 +7,14 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { deleteChatFromProject } from "@/features/projectsSlice";
+import axios from "axios";
 
 
 export default function ProjectCardTile({ chat }: { chat: chatType }) {
@@ -21,12 +22,18 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
     const [isHovering, setIsHovering] = useState(false)
     let { projectId } = useParams()
     const dispatch = useDispatch()
-    
 
-    const handleChatDelete = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
-        e.preventDefault()
-        dispatch(deleteChatFromProject({projectId: projectId as string, chatId: chat._id }))
-    }
+
+    
+    // const handleChatDelete = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    //     e.preventDefault()
+
+    //     let response = await axios.delete(`http://localhost:8000/api/v1/chat/${chat._id}`)
+    //     if(response.status == 200){
+    //         dispatch(deleteChatFromProject({projectId: projectId as string, chatId: chat._id }))
+
+    //     }
+    // }
 
     return (
         <Link
@@ -41,7 +48,7 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
 
                         <MdDelete
                             className={isHovering ? `opacity-100 hover:text-popover-foreground/60` : `opacity-0`}
-                            onClick={(e) => handleChatDelete(e)}
+                            // onClick={(e) => handleChatDelete(e)}
                         />
                     </div>
                     <CardDescription className="text-xs"> Created: {chat.dateCreated.toDateString()} </CardDescription>

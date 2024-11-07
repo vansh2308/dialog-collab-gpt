@@ -41,7 +41,8 @@ const projectSchema = new mongoose.Schema({
     inviteLink: String,
     chats: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chat'
+        ref: 'Chat',
+        default: []
     }]
 })
 

@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const dotenv = require('dotenv');
 // const { OpenAI } = require('openai');
 const { Groq } = require('groq-sdk');
+const Project = require("../models/projectModel");
 
 dotenv.config({ path: '../config.env' });
 
@@ -20,6 +21,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 const getAllChats = async (req, res, next) => {
     let userId = req.query.userId
+    let projectId = req.query.projectId
     if(!userId){
         res.status(400).send('User ID required')
     }
@@ -28,7 +30,7 @@ const getAllChats = async (req, res, next) => {
         // let user  = await User.find( {_id : new ObjectId(userId)} )
         // res.status(200).json(user)
 
-        let allChats = await Chat.find( {owner: new ObjectId(userId) })
+        let allChats = await Chat.find( {owner: new ObjectId(userId), projectId: projectId ? projectId : null })
         res.status(200).json(allChats)        
     } catch {
     }
@@ -42,7 +44,13 @@ const createChat = async (req, res, next) => {
         let chat = await Chat.create({
             name: req.body.name || "Untitled Chat",
             owner: new ObjectId(req.body.userId),
+            projectId: req.body.projectId ? new ObjectId(req.body.projectId) : null
         })
+        if(req.body.projectId){
+            await Project.updateOne({ _id: new ObjectId(req.body.projectId) }, {
+                $push: { chats: chat.id }
+            })
+        }
         await User.updateOne({ _id: new ObjectId(req.body.userId) }, {
             $push: { chats: chat.id }
         })
@@ -85,6 +93,7 @@ const updateChat = async (req, res, next) => {
 
 const deleteChat = async (req, res, next) => {
     let { chatId } = req.params
+
     try{
         let chat = await Chat.findOneAndDelete({_id: chatId})
         await User.updateOne({_id: chat.owner._id}, {
@@ -102,7 +111,7 @@ const getPromptResponse = async (req, res, next) => {
     try {
         let chat = await Chat.findOne({_id: chatId})
 
-        let N = 3; // last N messages for history
+        let N = 1; // last N messages for history
 
         let history = chat.allPrompts.slice(-N).flatMap(prompt => [
             { role: 'user', content: prompt.question },
@@ -117,9 +126,6 @@ const getPromptResponse = async (req, res, next) => {
             model: 'gemma-7b-it',
         });
         const response = chatCompletion.choices[0].message.content;
-
-        // response = 'Just a demo reply'
-
         res.status(200).json({ promptResponse: response })
     }
     catch (err) {

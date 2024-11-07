@@ -32,8 +32,12 @@ export const projectsSlice = createSlice({
     renameProject: (state, action: PayloadAction<{projectIdx: number, newName: string}>) => {
         state.allProjects[action.payload.projectIdx].name = action.payload.newName
     },
+    setUserProjectChats: (state, action: PayloadAction<{projectId: string, projectChats: chatType[]}>) => {
+        let projectIdx = state.allProjects.findIndex((project) => project._id == action.payload.projectId)
+        state.allProjects[projectIdx].chats = action.payload.projectChats
+    },
     addChatToProject: (state, action: PayloadAction<{projectIdx: number, chat: chatType}>) => {
-        state.allProjects[action.payload.projectIdx].chats.push(action.payload.chat)
+        state.allProjects[action.payload.projectIdx].chats.push(action.payload.chat)        
     },
     deleteChatFromProject: (state, action: PayloadAction<{projectId: string, chatId: string}>) => {
         let projectIdx = state.allProjects.findIndex((project) => project._id == action.payload.projectId)
@@ -47,5 +51,5 @@ export const projectsSlice = createSlice({
   }
 })
 
-export const { setUserProjects, addProject, deleteProject, renameProject, addChatToProject, deleteChatFromProject, addPromptToProjectChat } = projectsSlice.actions
+export const { setUserProjects, addProject, deleteProject, renameProject, addChatToProject, setUserProjectChats, deleteChatFromProject, addPromptToProjectChat } = projectsSlice.actions
 export default projectsSlice.reducer

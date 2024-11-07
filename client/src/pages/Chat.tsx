@@ -1,13 +1,11 @@
 import { RootState } from "@/app/store";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { chatType, promptType } from "@/types";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { useEffect, useRef, useState } from "react";
 import { FaMeteor } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Markdown from 'react-markdown'
-import { Skeleton } from "@/components/ui/skeleton";
 
 
 
