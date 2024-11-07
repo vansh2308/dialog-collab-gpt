@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaMeteor } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Markdown from 'react-markdown'
 
 
 
@@ -58,8 +59,10 @@ export default function Chat({ }) {
                                         className="text-popover-foreground"
                                     />
                                 </Avatar>
-                                <div className="max-w-[65vw] w-fit text-foreground rounded-2xl text-sm">
-                                    {prompt.reply}
+                                <div className="max-w-[65vw] text-foreground rounded-2xl text-sm">
+                                    <Markdown className='prompt-mkdn'>
+                                        {prompt.reply}
+                                    </Markdown>
                                 </div>
                             </div>
 
