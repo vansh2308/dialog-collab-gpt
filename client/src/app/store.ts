@@ -6,11 +6,12 @@ import userReducer from '../features/userSlice'
 import chatsReducer from '@/features/chatsSlice'
 import projectsReducer from '@/features/projectsSlice'
 
+
 export const store = configureStore({
   reducer: {
     user: userReducer,
     chats: chatsReducer,
-    projects: projectsReducer
+    projects: projectsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

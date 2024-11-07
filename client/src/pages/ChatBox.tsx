@@ -4,7 +4,7 @@ import { FaPaperclip } from "react-icons/fa6";
 import { FaArrowUp } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addPrompt } from "@/features/chatsSlice";
 import { Outlet, useParams } from "react-router-dom";
 import { promptType } from "@/types";
@@ -19,6 +19,8 @@ export default function ChatBox() {
     const dispatch = useDispatch()
     const allChats = useSelector((state: RootState) => state.chats.allChats)
     let { projectId, chatId } = useParams();
+
+    
 
 
     const handlePromptSubmit = async () => {

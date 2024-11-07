@@ -122,7 +122,6 @@ body {
   }
 
  .prompt-mkdn blockquote {
-    @apply bg-[#cbcbcb];
     @apply p-6;
     @apply border-l-4;
     @apply rounded-sm;
