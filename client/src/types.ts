@@ -36,7 +36,7 @@ export type projectType = {
     _id: string,
     members: {
         user: userType,
-        status: 'Owner' | 'Active' | 'Invite Sent'
+        status: 'Owner' | 'Joined' | 'Invite Sent'
     }[],
     inviteLink: string,
 }

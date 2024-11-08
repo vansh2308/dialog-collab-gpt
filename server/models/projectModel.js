@@ -2,24 +2,38 @@
 
 /* eslint-disable prefer-arrow-callback */
 const mongoose = require('mongoose');
-const { User, userSchema } = require('./userModel');
-const { chatSchema, Chat } = require('./chatModel');
-const { trim } = require('validator');
+const validator = require('validator')
 
+
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, 'User must have a name. Please provide name'],
+        trim: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        index: false,
+        unique: false,
+        validate: [validator.isEmail, 'Invalid Email'],
+        lowercase: true,
+    },
+    image: String,  
+    _id: mongoose.Schema.Types.ObjectId
+})
 
 
 const memberSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: userSchema,
+        required: true
     },
     status: {
         type: String,
-        enum:  [ 'Owner', 'Active', 'Invite Sent']
+        enum:  [ 'Owner', 'Joined', 'Invited']
     }
 }, {_id: false});
-
-
 
 
 

@@ -93,15 +93,13 @@ body {
 
 
 
-
-
-
 @layer components {
 
   .prompt-mkdn>*+* {
     @apply mt-3;
     @apply leading-loose;
-    @apply max-w-[65vw]
+    @apply max-w-[65vw];
+    @apply text-muted-foreground;
   }
 
   .prompt-mkdn :is(p, li) {

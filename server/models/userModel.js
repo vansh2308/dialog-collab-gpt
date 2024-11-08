@@ -43,11 +43,11 @@ const userSchema = new mongoose.Schema(
             default: []
             
         }],
-        // projects: [{
-        //     type: Schema.Types.ObjectId,
-        //     ref: 'Project',
-        //     default: []
-        // }]
+        projects: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Project',
+            default: []
+        }]
     },
     {
         toJSON: { virtuals: true },

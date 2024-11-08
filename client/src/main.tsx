@@ -11,6 +11,7 @@ import ChatBox from './pages/ChatBox.tsx'
 import { FaMeteor } from 'react-icons/fa6'
 import Chat from './pages/Chat.tsx'
 import ProjectDetails from './pages/ProjectDetails.tsx'
+import { Toaster } from './components/ui/toaster.tsx'
 
 
 const router = createBrowserRouter([
@@ -63,6 +64,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <Toaster />
     </Provider>
   </StrictMode>,
 )

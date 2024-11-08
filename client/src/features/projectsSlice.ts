@@ -1,7 +1,7 @@
 
 
 
-import { chatType, projectType, promptType } from '@/types'
+import { chatType, projectType, promptType, userType } from '@/types'
 import { createSlice, current } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { act } from 'react'
@@ -33,9 +33,13 @@ export const projectsSlice = createSlice({
     },
     renameProject: (state, action: PayloadAction<{projectIdx: number, newName: string}>) => {
         state.allProjects[action.payload.projectIdx].name = action.payload.newName
+    },
+    addMember: (state, action: PayloadAction<{projectId: string, newMember: userType}>) => {
+        let projectIdx = state.allProjects.findIndex(project => project._id == action.payload.projectId)
+        state.allProjects[projectIdx].members.push({ user: action.payload.newMember, status: 'Joined'})
     }
   }
 })
 
-export const { setUserProjects, addProject, deleteProject, renameProject } = projectsSlice.actions
+export const { setUserProjects, addProject, deleteProject, renameProject, addMember } = projectsSlice.actions
 export default projectsSlice.reducer

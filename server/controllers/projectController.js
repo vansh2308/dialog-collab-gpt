@@ -22,10 +22,21 @@ const createProject = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
+        let owner = await User.findById(req.body.userId)
+
         let project = await Project.create({
             name: req.body.name || 'Untitled Project',
             owner: new ObjectId(req.body.userId),
-            members: [ {user: new ObjectId(req.body.userId), status: 'Owner'} ]
+            members: [ {user: new ObjectId(req.body.userId), status: 'Owner'} ],
+            members: [{
+                user: {
+                    name: owner.name,
+                    email: owner.email,
+                    image: owner.image,
+                    _id: owner._id
+                },
+                status: 'Owner'
+            }]
         })
 
         project = await Project.findOneAndUpdate({ _id: project._id }, {
@@ -38,8 +49,8 @@ const createProject = async (req, res, next) => {
         })
 
         res.status(201).json(project)
-    } catch {
-
+    } catch (err) {
+        console.error(err)
     }
 }
 
@@ -51,6 +62,26 @@ const updateProject = async (req, res, next) => {
             await Project.updateOne({ _id: new ObjectId(projectId) }, {
                 name: req.body.name
             })
+            res.status(200).json('Project renamed')
+        } else if (req.body.type == 'add member'){
+            let userToBeAdded = await User.findOne({email: req.body.email})
+
+            if(userToBeAdded){
+                await Project.updateOne({ _id: new ObjectId(projectId) }, {
+                    $push: { members: {
+                        user: {
+                            name: userToBeAdded.name,
+                            email: userToBeAdded.email,
+                            image: userToBeAdded.image,
+                            _id: userToBeAdded._id
+                        },
+                        status: 'Joined'
+                    } }
+                })
+
+            }
+
+            res.status(200).json(userToBeAdded)
         }
         res.status(200).json('Project renamed')
     } catch (err ){

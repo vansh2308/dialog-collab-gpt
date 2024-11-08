@@ -115,7 +115,7 @@ export default function ProjectDetails() {
                     }
                 </div>
 
-                <TeamManagement project={project!} user={user} />
+                <TeamManagement user={user} />
             </div>
 
             <NewProjectChatDialog user={user} project={project!} />

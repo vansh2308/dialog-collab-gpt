@@ -97,14 +97,7 @@ const updateChat = async (req, res, next) => {
                 allPrompts: newPrompt
               }  
             }, {new: true})
-            // let madeByUser = await User.findById(response.allPrompts.slice(-1)[0].madeBy._id)
-            // let insertedPrompt = response.allPrompts.slice(-1)[0]
-            // insertedPrompt = {
-            //     question: insertedPrompt.question,
-            //     reply: insertedPrompt.reply,
-            //     madeBy: madeByUser,
-            //     _id: insertedPrompt._id
-            // }
+            
             res.status(200).json(newPrompt)
         }
  
