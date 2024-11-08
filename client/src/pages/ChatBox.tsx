@@ -56,8 +56,6 @@ export default function ChatBox() {
                     }
                 })
 
-                console.log(response)
-
                 dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
             }
 

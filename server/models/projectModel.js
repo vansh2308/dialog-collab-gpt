@@ -21,6 +21,8 @@ const memberSchema = new mongoose.Schema({
 
 
 
+
+
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -39,11 +41,7 @@ const projectSchema = new mongoose.Schema({
     },
     members: [memberSchema],
     inviteLink: String,
-    chats: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chat',
-        default: []
-    }]
+    // chats: [chatSchema]
 })
 
 

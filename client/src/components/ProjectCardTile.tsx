@@ -17,7 +17,7 @@ import { deleteChatFromProject } from "@/features/projectsSlice";
 import axios from "axios";
 
 
-export default function ProjectCardTile({ chat }: { chat: chatType }) {
+export default function ProjectCardTile({ chat }: { chat: chatType  }) {
     const user = useSelector((state: RootState) => state.user.value)
     const [isHovering, setIsHovering] = useState(false)
     let { projectId } = useParams()
@@ -25,15 +25,15 @@ export default function ProjectCardTile({ chat }: { chat: chatType }) {
 
 
     
-    // const handleChatDelete = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
-    //     e.preventDefault()
+    const handleChatDelete = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+        e.preventDefault()
 
-    //     let response = await axios.delete(`http://localhost:8000/api/v1/chat/${chat._id}`)
-    //     if(response.status == 200){
-    //         dispatch(deleteChatFromProject({projectId: projectId as string, chatId: chat._id }))
+        let response = await axios.delete(`http://localhost:8000/api/v1/chat/${chat._id}`)
+        if(response.status == 200){
+            dispatch(deleteChatFromProject({projectId: projectId as string, chatId: chat._id }))
 
-    //     }
-    // }
+        }
+    }
 
     return (
         <Link

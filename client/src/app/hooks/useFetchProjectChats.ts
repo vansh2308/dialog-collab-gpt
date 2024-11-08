@@ -11,15 +11,18 @@ const useFetchProjectChats = () => {
     const [loading, setLoading] = useState(true);
     const { userId, projectId } = useParams()
     const dispatch = useDispatch()
+    const [ projectChats, setProjectChats ] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data: response } = await axios.get('http://localhost:8000/api/v1/chats', {
+                let response = await axios.get('http://localhost:8000/api/v1/chats', {
                     params: { userId: userId, projectId: projectId }
                 });
 
-                dispatch(setUserProjectChats(response))
+                console.log(response.data)
+                dispatch(setUserProjectChats(response.data))
+                setProjectChats(projectChats)
             } catch (error) {
                 console.error(error)
             }

@@ -1,11 +1,28 @@
-
-
 /* eslint-disable prefer-arrow-callback */
 const mongoose = require('mongoose');
+const validator = require('validator');
+
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, 'User must have a name. Please provide name'],
+        trim: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        index: false,
+        unique: false,
+        validate: [validator.isEmail, 'Invalid Email'],
+        lowercase: true,
+    },
+    image: String,  
+    _id: mongoose.Schema.Types.ObjectId
+})
 
 
 const promptSchema = new mongoose.Schema({
-    madeBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    madeBy: userSchema,
     question: String,
     reply: String,
 })
@@ -15,12 +32,11 @@ const chatSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, 'User must have a name. Please provide name'],
+            required: [true, 'Chat must have a name. Please provide name'],
             trim: true,
         },
         owner: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            type: userSchema,
             required: true,
         },
         dateCreated: {
@@ -41,4 +57,4 @@ const chatSchema = new mongoose.Schema(
 
 
 const Chat = mongoose.model('Chat', chatSchema);
-module.exports = Chat;
+module.exports = Chat, chatSchema;

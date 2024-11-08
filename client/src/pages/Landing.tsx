@@ -17,6 +17,15 @@ export default function Landing() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    useEffect(() => {
+        console.log(user)
+        if(user){
+            navigate(`/${user?.id}`)
+        } else {
+            navigate('/')
+        }
+    }, [user])
+
     
     const responseGoogle = async (authResult: any) => {
         try {
@@ -24,9 +33,7 @@ export default function Landing() {
                 const result = await googleAuth(authResult.code);
 
                 dispatch(setUser(result.data.data.user))
-                if(user){
-                    navigate(`/${user?.id}`)
-                }
+                
             } else {
                 throw new Error(authResult);
             }

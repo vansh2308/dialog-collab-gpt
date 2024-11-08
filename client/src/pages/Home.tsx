@@ -85,7 +85,7 @@ export default function Home() {
                         </Avatar>
                     </MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>Hey {user?.name.slice(0, user!.name.indexOf(' '))} ! </MenubarItem>
+                        <MenubarItem>Hey {user?.name} ! </MenubarItem>
                         <MenubarSeparator />
                         <MenubarItem>Settings</MenubarItem>
                         <MenubarItem

@@ -30,7 +30,7 @@ const getAllChats = async (req, res, next) => {
         // let user  = await User.find( {_id : new ObjectId(userId)} )
         // res.status(200).json(user)
 
-        let allChats = await Chat.find( {owner: new ObjectId(userId), projectId: projectId ? projectId : null })
+        let allChats = await Chat.find( { 'owner._id' : new ObjectId(userId), projectId: projectId ? projectId : null })
         res.status(200).json(allChats)        
     } catch {
     }
@@ -41,11 +41,20 @@ const createChat = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
+        let owner = await User.findById(req.body.userId)
+    
         let chat = await Chat.create({
             name: req.body.name || "Untitled Chat",
-            owner: new ObjectId(req.body.userId),
-            projectId: req.body.projectId ? new ObjectId(req.body.projectId) : null
+            owner: {
+                name: owner.name,
+                email: owner.email,
+                image: owner.image,
+                _id: owner._id
+            },
+            projectId: req.body.projectId ? new ObjectId(req.body.projectId) : null,
         })
+
+
         if(req.body.projectId){
             await Project.updateOne({ _id: new ObjectId(req.body.projectId) }, {
                 $push: { chats: chat.id }
@@ -54,9 +63,10 @@ const createChat = async (req, res, next) => {
         await User.updateOne({ _id: new ObjectId(req.body.userId) }, {
             $push: { chats: chat.id }
         })
-        res.status(201).json(chat)
-    } catch {
 
+        res.status(201).json(chat)
+    } catch (err) {
+        console.log(err)
     }
 }
 
@@ -71,20 +81,35 @@ const updateChat = async (req, res, next) => {
             res.status(200).send('Chat renamed')
 
         } else if (req.body.type == 'add prompt'){
+
+            let madeBy = await User.findById(req.body.prompt.madeBy) 
+
+            let newPrompt = {
+                madeBy: {
+                    name: madeBy.name,
+                    email: madeBy.email, 
+                    image: madeBy.image,
+                    _id: madeBy._id
+                },
+                question: req.body.prompt.question,
+                reply: req.body.prompt.reply
+            }
+
+
             let response = await Chat.findOneAndUpdate({  _id: new ObjectId(chatId) }, {
               $push: {
-                allPrompts: req.body.prompt
+                allPrompts: newPrompt
               }  
             }, {new: true})
-            let madeByUser = await User.findById(response.allPrompts.slice(-1)[0].madeBy._id)
-            let insertedPrompt = response.allPrompts.slice(-1)[0]
-            insertedPrompt = {
-                question: insertedPrompt.question,
-                reply: insertedPrompt.reply,
-                madeBy: madeByUser,
-                _id: insertedPrompt._id
-            }
-            res.status(200).json( insertedPrompt )
+            // let madeByUser = await User.findById(response.allPrompts.slice(-1)[0].madeBy._id)
+            // let insertedPrompt = response.allPrompts.slice(-1)[0]
+            // insertedPrompt = {
+            //     question: insertedPrompt.question,
+            //     reply: insertedPrompt.reply,
+            //     madeBy: madeByUser,
+            //     _id: insertedPrompt._id
+            // }
+            res.status(200).json(newPrompt)
         }
  
     } catch(err) {

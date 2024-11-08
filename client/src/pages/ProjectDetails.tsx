@@ -44,9 +44,9 @@ export default function ProjectDetails() {
     const { allProjectChats, loading } = useFetchProjectChats()
 
     useEffect(() => {
-        console.log(allProjectChats, loading)
+        console.log(allProjectChats)
     })
-
+    
     useEffect(() => {
         setProject(allProjects.filter((project) => project._id == projectId)[0])
     })
@@ -117,7 +117,6 @@ export default function ProjectDetails() {
                                     </Tooltip>
                                 </TooltipProvider>
                             </>
-
                     }
                 </div>
 
@@ -127,10 +126,9 @@ export default function ProjectDetails() {
             <NewProjectChatDialog user={user} project={project!} />
 
             <div className="grid-cols-4 mt-10 grid gap-6">
-                {  
+                {
                     allProjectChats?.map((chat) => (
                         <Skeleton className="w-full aspect-square bg-secondary" />
-                        // <ProjectCardTile chat={chat} key={chat._id} />
                     ))
                 }
             </div>
