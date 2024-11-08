@@ -26,9 +26,12 @@ export const projectChatsSlice = createSlice({
     deleteProjectChat: (state, action: PayloadAction<string | undefined>) => {
         state.allProjectChats = state.allProjectChats.filter((chat) => chat._id != action.payload)
     },
+    addPromptToProjectChat: (state, action: PayloadAction<{ idx: number, newPrompt: promptType }>) => {
+      state.allProjectChats[action.payload.idx].allPrompts?.push(action.payload.newPrompt)
+    }
 
   }
 })
 
-export const { setProjectChats, deleteProjectChat, addProjectChat } = projectChatsSlice.actions
+export const { setProjectChats, deleteProjectChat, addProjectChat, addPromptToProjectChat } = projectChatsSlice.actions
 export default projectChatsSlice.reducer

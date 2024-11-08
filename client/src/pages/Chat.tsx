@@ -12,16 +12,12 @@ import Markdown from 'react-markdown'
 export default function Chat({ }) {
     let { projectId, chatId } = useParams();
 
-   
 
-
-    // WIP: Fetch chat from backend 
     const allChats = useSelector((state: RootState) => state.chats.allChats)
     const allProjects = useSelector((state: RootState) => state.projects.allProjects)
     const [chat, setChat] = useState<chatType>()
     const chatRef = useRef() as React.MutableRefObject<HTMLDivElement>
-
-
+    const allProjectChats = useSelector((state: RootState) => state.projectChats.allProjectChats)
 
     const scrollToBottom = () => {
         setTimeout(() => {
@@ -33,8 +29,7 @@ export default function Chat({ }) {
         if (!projectId) {
             setChat(allChats.filter((chat) => chat._id == chatId)[0])
         } else {
-            let projectIdx = allProjects.findIndex((project) => project._id == projectId)
-            setChat(allProjects[projectIdx].chats.filter((chat) => chat._id == chatId)[0])
+            setChat(allProjectChats.filter((chat) => chat._id == chatId)[0])
         }
         scrollToBottom()
     })
@@ -51,7 +46,6 @@ export default function Chat({ }) {
                         <>
                             <div className="self-end flex gap-5 mt-6">
                                 <div className="p-4 h-fit px-4 bg-primary max-w-[35vw] text-foreground rounded-2xl text-sm">
-                                    {/* { prompt.madeBy?.name } */}
                                     {prompt.question}
                                 </div>
                                 <Avatar className="">

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { addPrompt } from "@/features/chatsSlice";
 import { Outlet, useParams } from "react-router-dom";
 import { promptType } from "@/types";
-import { addPromptToProjectChat } from "@/features/projectsSlice";
+import { addPromptToProjectChat } from "@/features/projectChatsSlice";
 import { v4 as uuid } from 'uuid'
 import axios from "axios";
 
@@ -18,65 +18,99 @@ export default function ChatBox() {
     const [promptValue, setPromptValue] = useState<string>('')
     const dispatch = useDispatch()
     const allChats = useSelector((state: RootState) => state.chats.allChats)
+    const allProjectChats = useSelector((state: RootState) => state.projectChats.allProjectChats)
     let { projectId, chatId } = useParams();
-
-    
 
 
     const handlePromptSubmit = async () => {
-        if (projectId) {
-            let newPrompt: promptType = {
-                madeBy: user,
-                question: promptValue,
-                reply: "Just a demo reply",
-                _id: uuid()
-            }
+        let chatIdx = projectId ? allProjectChats.findIndex(chat => chat._id == chatId) : allChats.findIndex(chat => chat._id == chatId)
 
-            dispatch(addPromptToProjectChat({projectId, chatId: chatId!, newPrompt}))
-        } else {
-            let chatIdx = allChats.findIndex(chat => chat._id == chatId)
-
-            let responseMessage = 'FAILED_TO_GET_RESPONSE'
-            try {
-                const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
-                    prompt: promptValue
-                })
-                responseMessage = promptResponse.data.promptResponse;
-            } catch (err) {
-            }
-
+        let responseMessage = 'FAILED_TO_GET_RESPONSE'
+        try {
             // WIP: Fetch reply from OpenAI API key 
-            if (responseMessage !== 'FAILED_TO_GET_RESPONSE') {
-                let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
-                    type: "add prompt",
-                    prompt: {
-                        madeBy: user?._id,
-                        question: promptValue,
-                        reply: responseMessage,
-                    }
-                })
+            const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                prompt: promptValue
+            })
+            responseMessage = promptResponse.data.promptResponse;
+        } catch (err) {
+            console.error(err)
+        }
 
+        if (responseMessage !== 'FAILED_TO_GET_RESPONSE') {
+            let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
+                type: "add prompt",
+                prompt: {
+                    madeBy: user?._id,
+                    question: promptValue,
+                    reply: responseMessage,
+                }
+            })
+            
+            if(projectId){
+                dispatch(addPromptToProjectChat({ idx: chatIdx, newPrompt: response.data }))
+            } else {
                 dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
             }
-
-            // let newPrompt: promptType = {
-            //     madeBy: user,
-            //     question: promptValue,
-            //     reply: "Just a demo reply",
-            //     _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
-            // }
-            // dispatch(addPrompt({ idx: chatIdx, newPrompt }))
         }
     }
 
+
+
+
+    // const handlePromptSubmit = async () => {
+    //     if (projectId) {
+    //         let newPrompt: promptType = {
+    //             madeBy: user,
+    //             question: promptValue,
+    //             reply: "Just a demo reply",
+    //             _id: uuid()
+    //         }
+
+    //         dispatch(addPromptToProjectChat({projectId, chatId: chatId!, newPrompt}))
+    //     } else {
+    //         let chatIdx = allChats.findIndex(chat => chat._id == chatId)
+
+    //         let responseMessage = 'FAILED_TO_GET_RESPONSE'
+    //         try {
+    //             const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
+    //                 prompt: promptValue
+    //             })
+    //             responseMessage = promptResponse.data.promptResponse;
+    //         } catch (err) {
+    //         }
+
+    //         // WIP: Fetch reply from OpenAI API key 
+    //         if (responseMessage !== 'FAILED_TO_GET_RESPONSE') {
+    //             let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
+    //                 type: "add prompt",
+    //                 prompt: {
+    //                     madeBy: user?._id,
+    //                     question: promptValue,
+    //                     reply: responseMessage,
+    //                 }
+    //             })
+
+    //             dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
+    //         }
+
+    //         // let newPrompt: promptType = {
+    //         //     madeBy: user,
+    //         //     question: promptValue,
+    //         //     reply: "Just a demo reply",
+    //         //     _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
+    //         // }
+    //         // dispatch(addPrompt({ idx: chatIdx, newPrompt }))
+    //     }
+    // }
+
     const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if(e.key == 'Enter'){
+        if (e.key == 'Enter') {
             handlePromptSubmit()
             setPromptValue('')
         }
     }
 
-    
+
     return (
 
         <div className="w-full h-full relative p-6 flex flex-col gap-5">
