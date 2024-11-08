@@ -24,7 +24,7 @@ import { deleteProject, renameProject } from "@/features/projectsSlice"
 
 import TeamManagement from "@/components/TeamManagement";
 import NewProjectChatDialog from "@/components/NewProjectChatDialog"
-import ProjectCardTile from "@/components/ProjectCardTile"
+import ProjectChatTile from "@/components/ProjectChatTile"
 import axios from "axios"
 import { Skeleton } from "@/components/ui/skeleton"
 import useFetchProjectChats from "@/app/hooks/useFetchProjectChats"
@@ -40,12 +40,7 @@ export default function ProjectDetails() {
     const [editMode, setEditMode] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user.value)
-
     const { allProjectChats, loading } = useFetchProjectChats()
-
-    useEffect(() => {
-        console.log(allProjectChats)
-    })
     
     useEffect(() => {
         setProject(allProjects.filter((project) => project._id == projectId)[0])
@@ -127,8 +122,13 @@ export default function ProjectDetails() {
 
             <div className="grid-cols-4 mt-10 grid gap-6">
                 {
-                    allProjectChats?.map((chat) => (
+                    loading ? 
+                    [1, 1,1 ,1, 1,1].map((item) => (
                         <Skeleton className="w-full aspect-square bg-secondary" />
+                    ))
+                    :
+                    allProjectChats?.map((chat) => (
+                        <ProjectChatTile chat={chat} key={chat._id} />
                     ))
                 }
             </div>

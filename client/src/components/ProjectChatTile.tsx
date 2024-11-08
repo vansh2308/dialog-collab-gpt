@@ -12,25 +12,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { MdDelete } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteChatFromProject } from "@/features/projectsSlice";
 import axios from "axios";
+import { deleteProjectChat } from "@/features/projectChatsSlice";
 
 
-export default function ProjectCardTile({ chat }: { chat: chatType  }) {
+export default function ProjectChatTile({ chat }: { chat: chatType  }) {
     const user = useSelector((state: RootState) => state.user.value)
     const [isHovering, setIsHovering] = useState(false)
     let { projectId } = useParams()
     const dispatch = useDispatch()
 
 
-    
     const handleChatDelete = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
         e.preventDefault()
 
         let response = await axios.delete(`http://localhost:8000/api/v1/chat/${chat._id}`)
         if(response.status == 200){
-            dispatch(deleteChatFromProject({projectId: projectId as string, chatId: chat._id }))
+            dispatch(deleteProjectChat(chat._id))
 
         }
     }
@@ -48,10 +48,10 @@ export default function ProjectCardTile({ chat }: { chat: chatType  }) {
 
                         <MdDelete
                             className={isHovering ? `opacity-100 hover:text-popover-foreground/60` : `opacity-0`}
-                            // onClick={(e) => handleChatDelete(e)}
+                            onClick={(e) => handleChatDelete(e)}
                         />
                     </div>
-                    <CardDescription className="text-xs"> Created: {chat.dateCreated.toDateString()} </CardDescription>
+                    <CardDescription className="text-xs"> Created: { (new Date(chat.dateCreated)).toUTCString().split(':')[0].slice(0, -3) } </CardDescription>
                 </CardHeader>
 
 

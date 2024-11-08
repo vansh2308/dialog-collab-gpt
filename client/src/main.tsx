@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       {
         path: "/:userId/",
         element: <Home />,
-        errorElement: <>Error</>,
+        // errorElement: <>Error</>,
         children: [
           {
             path: "",

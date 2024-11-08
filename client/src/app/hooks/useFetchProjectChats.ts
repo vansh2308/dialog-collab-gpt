@@ -4,14 +4,15 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useParams } from 'react-router-dom';
-import { setUserProjectChats, setUserProjects } from '@/features/projectsSlice';
+import { setUserProjectChats } from '@/features/projectsSlice';
+import { setProjectChats } from '@/features/projectChatsSlice';
 
 const useFetchProjectChats = () => {
-    const allProjects = useSelector((state: RootState) => state.projects.allProjects)
+    // const allProjects = useSelector((state: RootState) => state.projects.allProjects)
+    const allProjectChats = useSelector((state: RootState) => state.projectChats.allProjectChats)
     const [loading, setLoading] = useState(true);
     const { userId, projectId } = useParams()
     const dispatch = useDispatch()
-    const [ projectChats, setProjectChats ] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,9 +21,7 @@ const useFetchProjectChats = () => {
                     params: { userId: userId, projectId: projectId }
                 });
 
-                console.log(response.data)
-                dispatch(setUserProjectChats(response.data))
-                setProjectChats(projectChats)
+                dispatch(setProjectChats(response.data))
             } catch (error) {
                 console.error(error)
             }
@@ -34,9 +33,9 @@ const useFetchProjectChats = () => {
         if (userId) fetchData();
     }, [userId, projectId]);
 
-    let projectIdx = allProjects.findIndex((project) => project._id == projectId)
+    // let projectIdx = allProjects.findIndex((project) => project._id == projectId)
     return {
-        allProjectChats: allProjects[projectIdx].chats,
+        allProjectChats,
         loading,
     };
 };

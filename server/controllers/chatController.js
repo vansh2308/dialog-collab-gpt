@@ -26,10 +26,6 @@ const getAllChats = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
-        // res.status(200).json(userId)
-        // let user  = await User.find( {_id : new ObjectId(userId)} )
-        // res.status(200).json(user)
-
         let allChats = await Chat.find( { 'owner._id' : new ObjectId(userId), projectId: projectId ? projectId : null })
         res.status(200).json(allChats)        
     } catch {

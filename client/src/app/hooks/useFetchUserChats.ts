@@ -15,7 +15,6 @@ const useFetchUserChats = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(userId)
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get('http://localhost:8000/api/v1/chats', {
