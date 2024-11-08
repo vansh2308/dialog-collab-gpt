@@ -13,7 +13,6 @@ import { RootState } from "@/app/store";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { deleteChatFromProject } from "@/features/projectsSlice";
 import axios from "axios";
 import { deleteProjectChat } from "@/features/projectChatsSlice";
 

@@ -85,6 +85,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -97,49 +98,61 @@ body {
 
 @layer components {
 
- .prompt-mkdn > * + * {
+  .prompt-mkdn>*+* {
     @apply mt-3;
     @apply leading-loose;
     @apply max-w-[65vw]
   }
 
- .prompt-mkdn :is(p, li) {
-    @apply text-[0.85rem];
+  .prompt-mkdn :is(p, li) {
+    @apply text-[0.8rem];
     @apply leading-relaxed
   }
 
- 
- .prompt-mkdn ul li::marker {
-
+  .prompt-mkdn strong {
+    @apply font-medium;
+    @apply text-xl;
   }
 
- .prompt-mkdn code {
+  .prompt-mkdn li strong, .prompt-mkdn p strong{
+    @apply text-[0.8rem];
+    @apply font-bold
+  }
+
+  .prompt-mkdn ul li{
+    @apply list-disc;
+    @apply ml-8
+  }
+
+  .prompt-mkdn ul li::marker {
+  }
+
+  .prompt-mkdn code {
     @apply text-xs;
     @apply whitespace-pre-wrap;
   }
 
-  .dark.prompt-mkdn code {
-  }
+  .dark.prompt-mkdn code {}
 
- .prompt-mkdn blockquote {
+  .prompt-mkdn blockquote {
     @apply p-6;
     @apply border-l-4;
     @apply rounded-sm;
-  } 
-  .dark.prompt-mkdn blockquote{
   }
 
- .prompt-mkdn blockquote p {
+  .dark.prompt-mkdn blockquote {}
+
+  .prompt-mkdn blockquote p {
     @apply font-semibold;
   }
 
 
- .prompt-mkdn a {
+  .prompt-mkdn a {
     @apply underline-offset-2;
     @apply underline;
   }
 
- .prompt-mkdn pre {
+  .prompt-mkdn pre {
     @apply bg-popover;
     @apply p-6;
     @apply border-l-4;
@@ -147,6 +160,5 @@ body {
     @apply rounded-md
   }
 
-  .dark.prompt-mkdn pre {
-  }
+  .dark.prompt-mkdn pre {}
 }

@@ -27,7 +27,7 @@ export default function ChatBox() {
 
         let responseMessage = 'FAILED_TO_GET_RESPONSE'
         try {
-            // WIP: Fetch reply from OpenAI API key 
+            // Fetch reply from OpenAI API key 
             const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
                 prompt: promptValue
             })
@@ -54,54 +54,6 @@ export default function ChatBox() {
         }
     }
 
-
-
-
-    // const handlePromptSubmit = async () => {
-    //     if (projectId) {
-    //         let newPrompt: promptType = {
-    //             madeBy: user,
-    //             question: promptValue,
-    //             reply: "Just a demo reply",
-    //             _id: uuid()
-    //         }
-
-    //         dispatch(addPromptToProjectChat({projectId, chatId: chatId!, newPrompt}))
-    //     } else {
-    //         let chatIdx = allChats.findIndex(chat => chat._id == chatId)
-
-    //         let responseMessage = 'FAILED_TO_GET_RESPONSE'
-    //         try {
-    //             const promptResponse = await axios.post(`http://localhost:8000/api/v1/chat/${chatId}`, {
-    //                 prompt: promptValue
-    //             })
-    //             responseMessage = promptResponse.data.promptResponse;
-    //         } catch (err) {
-    //         }
-
-    //         // WIP: Fetch reply from OpenAI API key 
-    //         if (responseMessage !== 'FAILED_TO_GET_RESPONSE') {
-    //             let response = await axios.put(`http://localhost:8000/api/v1/chat/${chatId}`, {
-    //                 type: "add prompt",
-    //                 prompt: {
-    //                     madeBy: user?._id,
-    //                     question: promptValue,
-    //                     reply: responseMessage,
-    //                 }
-    //             })
-
-    //             dispatch(addPrompt({ idx: chatIdx, newPrompt: response.data }))
-    //         }
-
-    //         // let newPrompt: promptType = {
-    //         //     madeBy: user,
-    //         //     question: promptValue,
-    //         //     reply: "Just a demo reply",
-    //         //     _id: allChats[chatIdx].allPrompts?.length ? (allChats[chatIdx].allPrompts?.length + 1).toString() : '1'
-    //         // }
-    //         // dispatch(addPrompt({ idx: chatIdx, newPrompt }))
-    //     }
-    // }
 
     const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {

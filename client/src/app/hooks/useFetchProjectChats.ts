@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useParams } from 'react-router-dom';
-import { setUserProjectChats } from '@/features/projectsSlice';
 import { setProjectChats } from '@/features/projectChatsSlice';
 
 const useFetchProjectChats = () => {
