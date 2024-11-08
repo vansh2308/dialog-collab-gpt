@@ -20,9 +20,9 @@ export const projectChatsSlice = createSlice({
     setProjectChats: (state, action: PayloadAction<chatType[]>) => {
         state.allProjectChats = action.payload
     },
-    // addProjectChat: (state, action: PayloadAction<projectType>)=>{
-    //     state.allProjects.push(action.payload)
-    // },
+    addProjectChat: (state, action: PayloadAction<chatType>)=>{
+        state.allProjectChats.push(action.payload)
+    },
     deleteProjectChat: (state, action: PayloadAction<string | undefined>) => {
         state.allProjectChats = state.allProjectChats.filter((chat) => chat._id != action.payload)
     },
@@ -30,5 +30,5 @@ export const projectChatsSlice = createSlice({
   }
 })
 
-export const { setProjectChats, deleteProjectChat } = projectChatsSlice.actions
+export const { setProjectChats, deleteProjectChat, addProjectChat } = projectChatsSlice.actions
 export default projectChatsSlice.reducer

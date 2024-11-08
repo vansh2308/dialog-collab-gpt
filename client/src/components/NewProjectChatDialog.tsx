@@ -17,9 +17,9 @@ import { createNewChat } from "@/lib/utils"
 import { useParams } from "react-router-dom"
 import { projectType, userType } from "@/types"
 import { useDispatch, useSelector } from "react-redux"
-import { addChatToProject } from "@/features/projectsSlice"
 import { RootState } from "@/app/store"
 import axios from "axios"
+import { addProjectChat } from "@/features/projectChatsSlice"
 
 export default function NewProjectChatDialog({user, project}: {user: userType, project: projectType}) {
     const [nameVal, setNameVal] = useState("Untitled Chat")
@@ -42,7 +42,7 @@ export default function NewProjectChatDialog({user, project}: {user: userType, p
                 question: null,
                 _id: response.data._id 
             })  
-            dispatch(addChatToProject({projectIdx, chat: newChat}))
+            dispatch(addProjectChat(newChat))
         }
     }
 
