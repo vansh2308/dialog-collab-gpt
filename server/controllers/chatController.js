@@ -22,23 +22,27 @@ var ObjectId = require('mongoose').Types.ObjectId;
 const getAllChats = async (req, res, next) => {
     let userId = req.query.userId
     let projectId = req.query.projectId
-    if(!userId){
+    if (!userId) {
         res.status(400).send('User ID required')
     }
     try {
-        let allChats = await Chat.find( { 'owner._id' : new ObjectId(userId), projectId: projectId ? projectId : null })
-        res.status(200).json(allChats)        
+        if (projectId) {
+            var allChats = await Chat.find({ projectId: projectId })
+        } else {
+            var allChats = await Chat.find({ 'owner._id': new ObjectId(userId) })
+        }
+        res.status(200).json(allChats)
     } catch {
     }
 }
 
 const createChat = async (req, res, next) => {
-    if(!req.body.userId){
+    if (!req.body.userId) {
         res.status(400).send('User ID required')
     }
     try {
         let owner = await User.findById(req.body.userId)
-    
+
         let chat = await Chat.create({
             name: req.body.name || "Untitled Chat",
             owner: {
@@ -51,7 +55,7 @@ const createChat = async (req, res, next) => {
         })
 
 
-        if(req.body.projectId){
+        if (req.body.projectId) {
             await Project.updateOne({ _id: new ObjectId(req.body.projectId) }, {
                 $push: { chats: chat.id }
             })
@@ -69,21 +73,21 @@ const createChat = async (req, res, next) => {
 
 const updateChat = async (req, res, next) => {
     let { chatId } = req.params
-    try{
-        if(req.body.type == 'rename'){
+    try {
+        if (req.body.type == 'rename') {
             await Chat.updateOne({ _id: new ObjectId(chatId) }, {
                 name: req.body.name
             })
             res.status(200).send('Chat renamed')
 
-        } else if (req.body.type == 'add prompt'){
+        } else if (req.body.type == 'add prompt') {
 
-            let madeBy = await User.findById(req.body.prompt.madeBy) 
+            let madeBy = await User.findById(req.body.prompt.madeBy)
 
             let newPrompt = {
                 madeBy: {
                     name: madeBy.name,
-                    email: madeBy.email, 
+                    email: madeBy.email,
                     image: madeBy.image,
                     _id: madeBy._id
                 },
@@ -92,38 +96,38 @@ const updateChat = async (req, res, next) => {
             }
 
 
-            let response = await Chat.findOneAndUpdate({  _id: new ObjectId(chatId) }, {
-              $push: {
-                allPrompts: newPrompt
-              }  
-            }, {new: true})
-            
+            let response = await Chat.findOneAndUpdate({ _id: new ObjectId(chatId) }, {
+                $push: {
+                    allPrompts: newPrompt
+                }
+            }, { new: true })
+
             res.status(200).json(newPrompt)
         }
- 
-    } catch(err) {
+
+    } catch (err) {
     }
 }
 
 const deleteChat = async (req, res, next) => {
     let { chatId } = req.params
 
-    try{
-        let chat = await Chat.findOneAndDelete({_id: chatId})
-        await User.updateOne({_id: chat.owner._id}, {
+    try {
+        let chat = await Chat.findOneAndDelete({ _id: chatId })
+        await User.updateOne({ _id: chat.owner._id }, {
             $pull: { chats: chat._id }
         })
         res.status(200).json(chat)
-    } catch (err){
+    } catch (err) {
 
     }
 }
 
 const getPromptResponse = async (req, res, next) => {
-    const {chatId} = req.params
+    const { chatId } = req.params
     const prompt = req.body.prompt;
     try {
-        let chat = await Chat.findOne({_id: chatId})
+        let chat = await Chat.findOne({ _id: chatId })
 
         let N = 1; // last N messages for history
 
@@ -133,7 +137,7 @@ const getPromptResponse = async (req, res, next) => {
         ]);
 
         history.push({ role: 'user', content: prompt });
-        
+
         const chatCompletion = await client.chat.completions.create({
             messages: history,
             // model: 'gpt-3.5-turbo',

@@ -10,7 +10,8 @@ const getAllProjects = async (req, res, next) => {
         res.status(400).send('User ID required')
     }
     try {
-        let allProjects = await Project.find( {owner: {_id: new ObjectId(userId)} } )
+        // let allProjects = await Project.find( {owner: {_id: new ObjectId(userId)} } )
+        let allProjects = await Project.find( {members: { $elemMatch: { 'user._id': new ObjectId(userId) } }} )
         res.status(200).json(allProjects)        
     } catch {
     }
@@ -82,7 +83,7 @@ const updateProject = async (req, res, next) => {
             }
 
             res.status(200).json(userToBeAdded)
-            
+
         } else if (req.body.type == 'delete member'){
             const result = await Project.updateOne( { _id: new ObjectId(projectId) }, {
                 $pull: { members: {
