@@ -8,7 +8,7 @@ import { deleteChat, renameChat } from "@/features/chatsSlice"
 import { RootState } from "@/app/store"
 import axios from "axios";
 
-const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, userId: string | undefined }) => {
+const ChatTile = ({ name, chatId, userId, onClick }: { name: string, chatId: string, userId: string | undefined, onClick?: () => void }) => {
     const [chatName, setChatName] = useState(name)
     const [editMode, setEditMode] = useState(false)
     const dispatch = useDispatch()
@@ -49,6 +49,7 @@ const ChatTile = ({ name, chatId, userId }: { name: string, chatId: string, user
             className={({ isActive }) => isActive ? "flex justify-between items-center p-3 rounded-lg bg-accent" : "flex justify-between items-center p-3 rounded-lg"}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+            onClick={onClick}
         >
             {!editMode ?
                 <h3 className="capitalize" onDoubleClick={() => setEditMode(true)}> {chatName} </h3> :
