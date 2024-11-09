@@ -41,11 +41,10 @@ export default function ProjectDetails() {
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user.value)
     const { allProjectChats, loading } = useFetchProjectChats()
-    
+
     useEffect(() => {
         setProject(allProjects.filter((project) => project._id == projectId)[0])
-    })
-
+    }, [allProjects, projectId])
 
     const handleRename = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
@@ -60,7 +59,6 @@ export default function ProjectDetails() {
                 let projectIdx = allProjects.findIndex(project => project._id == projectId)
                 dispatch(renameProject({ projectIdx, newName }))
             }
-
         }
     }
 
@@ -74,19 +72,19 @@ export default function ProjectDetails() {
 
 
     return (
-        <div className="w-full h-full p-9 overflow-x-hidden overflow-y-scroll">
-            <div className="flex w-full justify-between">
-
-                <div className="flex gap-3 items-baseline">
+        <div className="w-full h-full p-6 sm:p-9 overflow-x-hidden overflow-y-scroll">
+            <div className="flex flex-col sm:flex-row justify-between gap-6 sm:gap-3">
+                
+                <div className="flex gap-3 items-baseline flex-wrap">
                     {
                         !editMode ?
                             <>
-                                <h2 className="text-3xl font-semibold mr-4 capitalize">
+                                <h2 className="text-2xl sm:text-3xl font-semibold mr-4 capitalize">
                                     {project?.name}
                                 </h2>
                                 <TooltipProvider>
                                     <Tooltip>
-                                        <TooltipTrigger onClick={() => setEditMode(true)}><FaPencil /></TooltipTrigger>
+                                        <TooltipTrigger onClick={() => setEditMode(true)}><FaPencil className="text-lg sm:text-xl" /></TooltipTrigger>
                                         <TooltipContent className="bg-accent">
                                             <p>Edit</p>
                                         </TooltipContent>
@@ -97,14 +95,14 @@ export default function ProjectDetails() {
                                 <Input
                                     type="text"
                                     placeholder={project?.name}
-                                    className="w-[18rem] text-3xl font-semibold"
+                                    className="w-[18rem] sm:w-[22rem] text-xl sm:text-3xl font-semibold"
                                     onKeyDown={(e) => handleRename(e)}
                                 />
 
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger onClick={handleDelete}>
-                                            <MdDelete className="text-xl" />
+                                            <MdDelete className="text-xl sm:text-2xl" />
                                         </TooltipTrigger>
                                         <TooltipContent className="bg-accent">
                                             <p>Delete Project</p>
@@ -120,11 +118,11 @@ export default function ProjectDetails() {
 
             <NewProjectChatDialog user={user} project={project!} />
 
-            <div className="grid-cols-4 mt-10 grid gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mt-10">
                 {
                     loading ? 
-                    [1, 1,1 ,1, 1,1].map((item) => (
-                        <Skeleton className="w-full aspect-square bg-secondary" />
+                    [1, 1,1 ,1, 1,1].map((item, index) => (
+                        <Skeleton key={index} className="w-full aspect-square bg-secondary" />
                     ))
                     :
                     allProjectChats?.map((chat) => (
