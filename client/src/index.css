@@ -155,7 +155,8 @@ body {
     @apply p-6;
     @apply border-l-4;
     @apply border-primary;
-    @apply rounded-md
+    @apply rounded-md;
+    @apply text-muted-foreground
   }
 
   .dark.prompt-mkdn pre {}

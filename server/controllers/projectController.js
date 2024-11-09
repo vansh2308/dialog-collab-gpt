@@ -82,8 +82,18 @@ const updateProject = async (req, res, next) => {
             }
 
             res.status(200).json(userToBeAdded)
+            
+        } else if (req.body.type == 'delete member'){
+            const result = await Project.updateOne( { _id: new ObjectId(projectId) }, {
+                $pull: { members: {
+                    'user.email': req.body.email
+                } }
+            } )
+
+            res.status(200).json(result)
         }
-        res.status(200).json('Project renamed')
+
+        res.status(400).json({msg: 'Invalid Operation requested!'})
     } catch (err ){
 
     }

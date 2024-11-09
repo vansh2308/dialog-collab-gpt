@@ -78,7 +78,13 @@ export default function TeamManagement({ user }: { user: userType }) {
 
     const handleDeleteMember = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, memberEmail: string) => {
         // WIP: delete member from backend as well  
-        dispatch(deleteMember({ projectId: projectId!, memberEmail }))
+        let response = await axios.put(`http://localhost:8000/api/v1/project/${projectId}`, {
+            type: "delete member",
+            email: memberEmail
+        })
+        if (response.data) {
+            dispatch(deleteMember({ projectId: projectId!, memberEmail }))
+        } 
     }
 
 
