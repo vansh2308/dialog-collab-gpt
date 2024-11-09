@@ -37,9 +37,13 @@ export const projectsSlice = createSlice({
     addMember: (state, action: PayloadAction<{projectId: string, newMember: userType}>) => {
         let projectIdx = state.allProjects.findIndex(project => project._id == action.payload.projectId)
         state.allProjects[projectIdx].members.push({ user: action.payload.newMember, status: 'Joined'})
+    },
+    deleteMember: (state, action: PayloadAction<{projectId: string, memberEmail: string}>) => {
+        let projectIdx = state.allProjects.findIndex(project => project._id == action.payload.projectId)
+        state.allProjects[projectIdx].members = state.allProjects[projectIdx].members.filter((member) => member.user?.email != action.payload.memberEmail)
     }
   }
 })
 
-export const { setUserProjects, addProject, deleteProject, renameProject, addMember } = projectsSlice.actions
+export const { setUserProjects, addProject, deleteProject, renameProject, addMember, deleteMember } = projectsSlice.actions
 export default projectsSlice.reducer
