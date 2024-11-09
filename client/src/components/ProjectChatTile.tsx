@@ -46,7 +46,7 @@ export default function ProjectChatTile({ chat }: { chat: chatType  }) {
                         <CardTitle className="capitalize max-w-[75%] overflow-x-hidden text-nowrap overflow-y-clip h-[1.7rem]">{chat.name.slice(0, 15) + (chat.name.length > 15 ? '...' : '')}</CardTitle>
 
                         <MdDelete
-                            className={isHovering ? `opacity-100 hover:text-popover-foreground/60` : `opacity-0`}
+                            className={`opacity-100 sm:opacity-100 md:opacity-0 hover:opacity-100 hover:text-popover-foreground/60 transition-opacity`}
                             onClick={(e) => handleChatDelete(e)}
                         />
                     </div>
