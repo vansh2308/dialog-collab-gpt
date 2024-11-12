@@ -97,13 +97,19 @@ export default function TeamManagement({ user }: { user: userType }) {
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <div className="flex pr-5 cursor-pointer">
-                    <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src={user?.image} alt="@shadcn" /> </Avatar>
-                    <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> </Avatar>
-                    <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> </Avatar>
-                    <Avatar className="border-4 border-popover -mr-3">
-                        <AvatarImage src="" alt="@shadcn" />
-                        <AvatarFallback className="bg-accent">+2</AvatarFallback>
-                    </Avatar>
+                    {
+                        project.members.slice(0, 3).map((member) => (
+                            <Avatar className="border-4 border-popover -mr-3"> <AvatarImage src={member.user?.image} alt="@shadcn" /> </Avatar>
+                        ))
+                    }
+
+                    {
+                        (project.members.length > 3) && 
+                        <Avatar className="border-4 border-popover -mr-3">
+                            <AvatarImage src="" alt="@shadcn" />
+                            <AvatarFallback className="bg-accent">+{project.members.length - 3}</AvatarFallback>
+                        </Avatar>
+                    }
                 </div>
             </DropdownMenuTrigger>
 

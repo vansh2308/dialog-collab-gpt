@@ -12,6 +12,7 @@ import { FaMeteor } from 'react-icons/fa6'
 import Chat from './pages/Chat.tsx'
 import ProjectDetails from './pages/ProjectDetails.tsx'
 import { Toaster } from './components/ui/toaster.tsx'
+import Error from './pages/Error.tsx'
 
 
 const router = createBrowserRouter([
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       {
         path: "/:userId/",
         element: <Home />,
-        // errorElement: <>Error</>,
+        errorElement: <Landing />,
         children: [
           {
             path: "",
