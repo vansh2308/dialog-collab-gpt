@@ -37,9 +37,16 @@ export default function Home() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    useCallback(( ) => {
-        console.log(user)
-    }, [user])
+    // useCallback(( ) => {
+    //     console.log(user)
+    // }, [user])
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user')!)
+        if(user){
+            dispatch(setUser(user))
+        }
+    }, [])
 
 
     const handleStartChat = async () => {
@@ -70,6 +77,7 @@ export default function Home() {
     const handleLogout = () => {
         // WIP: Set user.active = false in mongo collection 
         dispatch(setUser(null))
+        localStorage.removeItem('user')
         navigate('/')
     }
 

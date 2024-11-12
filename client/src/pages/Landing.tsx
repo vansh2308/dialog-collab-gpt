@@ -18,7 +18,7 @@ export default function Landing() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(user)
+        // console.log(user)
         if(user){
             navigate(`/${user?.id}`)
         } else {
@@ -33,7 +33,7 @@ export default function Landing() {
                 const result = await googleAuth(authResult.code);
 
                 dispatch(setUser(result.data.data.user))
-                
+                localStorage.setItem('user', JSON.stringify(result.data.data.user))
             } else {
                 throw new Error(authResult);
             }
