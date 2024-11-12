@@ -14,7 +14,7 @@ import {
 import { IoIosAddCircle } from "react-icons/io";
 import { createNewChat, createNewProject } from "@/lib/utils";
 import { addChat } from "@/features/chatsSlice";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ChatTile from "@/components/ChatTile";
 import { addProject } from "@/features/projectsSlice";
 import ProjectTile from "@/components/ProjectTile";
@@ -36,6 +36,10 @@ export default function Home() {
     const [filterText, setFilterText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    useCallback(( ) => {
+        console.log(user)
+    }, [user])
 
 
     const handleStartChat = async () => {
@@ -81,8 +85,10 @@ export default function Home() {
                 <MenubarMenu>
                     <MenubarTrigger className="focus:bg-popover w-fit h-fit p-0 rounded-full">
                         <Avatar>
-                            <AvatarImage src={user?.image} />
+                            <AvatarImage src={ user?.image } alt={ user?.image } />
                         </Avatar>
+
+                        {/* <img src={user?.image} className="w-[2rem] h-[2rem] rounded-full" /> */}
                     </MenubarTrigger>
                     <MenubarContent>
                         <MenubarItem>Hey {user?.name} ! </MenubarItem>

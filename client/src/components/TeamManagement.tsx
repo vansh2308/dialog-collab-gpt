@@ -27,6 +27,7 @@ import { ToastAction } from "@/components/ui/toast"
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Button } from "./ui/button";
+import { Root } from "node_modules/react-markdown/lib";
 
 
 export default function TeamManagement({ user }: { user: userType }) {
@@ -35,6 +36,10 @@ export default function TeamManagement({ user }: { user: userType }) {
     const [project, setProject] = useState(allProjects.filter((project) => project._id == projectId)[0])
     const dispatch = useDispatch()
     const { toast } = useToast()
+
+    useEffect(() => {
+        console.log(user, project)
+    }, [])
 
     useEffect(() => {
         setProject(allProjects.filter((project) => project._id == projectId)[0])
@@ -84,7 +89,7 @@ export default function TeamManagement({ user }: { user: userType }) {
         })
         if (response.data) {
             dispatch(deleteMember({ projectId: projectId!, memberEmail }))
-        } 
+        }
     }
 
 
@@ -112,10 +117,14 @@ export default function TeamManagement({ user }: { user: userType }) {
                     <IoLink className="mr-4 text-[1.2rem]" /> Copy Link
                 </DropdownMenuItem>
 
-                <Input type="email" className="focus:bg-popover my-2" placeholder="emailtoshare@gmail.com" name="email" required
-                    onClick={(e) => e.preventDefault()}
-                    onKeyDown={(e) => handleAddMember(e)}
-                />
+                {
+                    (user?.email == project.members[0].user?.email) &&
+
+                    <Input type="email" className="focus:bg-popover my-2" placeholder="emailtoshare@gmail.com" name="email" required
+                        onClick={(e) => e.preventDefault()}
+                        onKeyDown={(e) => handleAddMember(e)}
+                    />
+                }
 
                 <DropdownMenuSeparator />
 
@@ -161,11 +170,15 @@ export default function TeamManagement({ user }: { user: userType }) {
                                                 </TableCell>
                                                 <TableCell> {member.status} </TableCell>
                                             </TableRow>
-                                            <TooltipContent side="left" asChild className="bg-popover border border-muted">
-                                                <Button variant={'destructive'} onClick={(e) => handleDeleteMember(e, member.user?.email!)}>
-                                                    Delete User
-                                                </Button>
-                                            </TooltipContent>
+
+                                            {
+                                                (user?.email == project.members[0].user?.email) &&
+                                                <TooltipContent side="left" asChild className="bg-popover border border-muted">
+                                                    <Button variant={'destructive'} onClick={(e) => handleDeleteMember(e, member.user?.email!)}>
+                                                        Delete User
+                                                    </Button>
+                                                </TooltipContent>
+                                            }
                                         </Tooltip>
                                     </TooltipProvider>
                             ))
